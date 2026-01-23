@@ -1,0 +1,85 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table brandMaster {
+  idBrandMaster Int [pk, increment]
+  brandName String
+  isActive Boolean [default: true]
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime [default: `now()`]
+  deletedAt DateTime
+  brandLogo String
+  domain String
+  city String
+  emailContact String
+  fieldName String
+  location String
+  setorName String
+  smsContact String
+  timezone String
+  placeNumber String
+  state String
+  street String
+  cnpj String
+  cep String
+  cityCode Int
+  district String
+  isPoc Boolean [default: false]
+  contract String
+  contractAt DateTime
+  pocOpenedAt DateTime
+  manual String
+  termsOfUse String
+  privacyPolicy String
+  vM vM [not null]
+  users user [not null]
+}
+
+Table vM {
+  idVM Int [pk, increment]
+  vmName String
+  vCPU Int [not null]
+  ram Int [not null]
+  disk Int [not null]
+  hasBackup Boolean [default: false]
+  idBrandMaster Int
+  status EVMStatus
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime [default: `now()`]
+  deletedAt DateTime
+  os String
+  brandMaster brandMaster
+}
+
+Table user {
+  idUser String [pk]
+  username String [not null]
+  password String [not null]
+  email String [not null]
+  profileImgUrl String
+  role ERole [not null, default: 'member']
+  idBrandMaster Int
+  isActive Boolean [default: true]
+  lastLoginDate DateTime
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime [default: `now()`]
+  deletedAt DateTime
+  brandMaster brandMaster
+}
+
+Enum EVMStatus {
+  RUNNING
+  STOPPED
+  PAUSED
+}
+
+Enum ERole {
+  admin
+  manager
+  member
+}
+
+Ref: vM.idBrandMaster > brandMaster.idBrandMaster
+
+Ref: user.idBrandMaster > brandMaster.idBrandMaster
