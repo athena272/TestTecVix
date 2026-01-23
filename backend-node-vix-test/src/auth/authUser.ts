@@ -5,6 +5,7 @@ import { STATUS_CODE } from "../constants/statusCode";
 import { verifyToken } from "../utils/jwt";
 import { CustomRequest } from "../types/custom";
 import { user } from "@prisma/client";
+import { UserModel } from "../models/UserModel";
 
 export const authUser = async (
   req: CustomRequest<user>,
@@ -15,14 +16,31 @@ export const authUser = async (
   if (!authorization) {
     throw new AppError(ERROR_MESSAGE.INVALID_TOKEN, STATUS_CODE.UNAUTHORIZED);
   }
+
   const token = authorization.split(" ")[1];
+  if (!token) {
+    throw new AppError(ERROR_MESSAGE.INVALID_TOKEN, STATUS_CODE.UNAUTHORIZED);
+  }
 
-  // const idUser = verifyToken(token);
-  // const user = //
+  try {
+    const decoded = verifyToken(token);
+    const userModel = new UserModel();
+    const user = await userModel.getById(decoded.idUser);
 
-  // if (isInvalidUser) {
-  //   throw new AppError(ERROR_MESSAGE.UNAUTHORIZED, STATUS_CODE.UNAUTHORIZED);
-  // }
-  // req.user = user;
-  return next();
+    if (!user) {
+      throw new AppError(ERROR_MESSAGE.USER_NOT_FOUND, STATUS_CODE.UNAUTHORIZED);
+    }
+
+    if (user.deletedAt) {
+      throw new AppError(ERROR_MESSAGE.UNAUTHORIZED, STATUS_CODE.UNAUTHORIZED);
+    }
+
+    req.user = user;
+    return next();
+  } catch (error) {
+    if (error instanceof AppError) {
+      throw error;
+    }
+    throw new AppError(ERROR_MESSAGE.INVALID_TOKEN, STATUS_CODE.UNAUTHORIZED);
+  }
 };
