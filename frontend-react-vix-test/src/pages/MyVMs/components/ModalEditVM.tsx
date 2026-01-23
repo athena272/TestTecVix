@@ -1,6 +1,5 @@
-import { Modal, SxProps } from "@mui/material";
+import { Modal, SxProps, Stack } from "@mui/material";
 import { useZTheme } from "../../../stores/useZTheme";
-import { Stack } from "@mui/system";
 import { FormEditVM } from "./FormEditVM";
 
 interface IProps {

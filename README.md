@@ -393,23 +393,34 @@ O sistema possui três níveis de permissão:
 
 ## 🔑 Credenciais de Teste
 
-> **Importante**: Após implementar o sistema de autenticação, adicione aqui as credenciais de usuários de teste para cada tipo de permissão.
+> **Importante**: Para criar usuários de teste com diferentes roles, execute o script `npm run create-test-users` no diretório do backend.
 
-Exemplo:
+### Como Criar Usuários de Teste
+
+Execute o seguinte comando no diretório do backend:
+
+```bash
+cd backend-node-vix-test
+npm run create-test-users
+```
+
+Isso criará três usuários de teste:
 
 ```
 Admin:
-  Email: admin@vituax.com
-  Senha: Admin@123
+  Email: admin@test.com
+  Senha: Test@123
 
 Manager:
-  Email: manager@vituax.com
-  Senha: Manager@123
+  Email: manager@test.com
+  Senha: Test@123
 
 Member:
-  Email: member@vituax.com
-  Senha: Member@123
+  Email: member@test.com
+  Senha: Test@123
 ```
+
+**Nota**: O script usa `upsert`, então pode ser executado múltiplas vezes sem criar duplicatas. Ele atualizará as senhas caso os usuários já existam.
 
 ---
 

@@ -1,6 +1,5 @@
-import { Input, Slider, SxProps } from "@mui/material";
+import { Input, Slider, SxProps, Stack } from "@mui/material";
 import { useZTheme } from "../../../stores/useZTheme";
-import { Stack } from "@mui/system";
 import { TextRob16FontL } from "../../../components/TextL";
 import { useRefFocusEffect } from "../../../hooks/useRefFocusEffect";
 
