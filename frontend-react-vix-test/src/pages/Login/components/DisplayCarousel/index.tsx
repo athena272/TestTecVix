@@ -27,7 +27,9 @@ export const DisplayCarousel = () => {
             opacity: 1;
           }
           .swiper-pagination-bullet-active {
-            background-color: ${theme[mode].black};
+            background-color: ${theme[mode].light};
+            width: 24px;
+            border-radius: 6px;
           }
         `}
       </style>
