@@ -107,6 +107,7 @@ export const FormVM = () => {
       hasBackup: hasBackup,
       os: String(vmSO?.value) || "",
       pass: vmPassword,
+      location: vmLocalization?.value as string | undefined,
     });
   };
 
