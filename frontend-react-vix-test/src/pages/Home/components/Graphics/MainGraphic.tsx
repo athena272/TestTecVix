@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   XAxis,
   YAxis,
@@ -16,10 +16,39 @@ import { useTranslation } from "react-i18next";
 import { useZGlobalVar } from "../../../../stores/useZGlobalVar";
 import { IFormatData } from "../../../../types/socketType";
 
+const generateMockCpuData = (): IFormatData[] => {
+  const data: IFormatData[] = [];
+  const now = new Date();
+
+  for (let i = 29; i >= 0; i--) {
+    const time = new Date(now.getTime() - i * 60000); // 1 minuto por ponto
+    const value = Math.random() * 100; // 0-100%
+
+    data.push({
+      time: time.toLocaleTimeString("pt-BR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+      value: parseFloat(value.toFixed(3)),
+    });
+  }
+
+  return data;
+};
+
 export const MainGraphic = () => {
-  const [chartData] = useState<IFormatData[]>([]);
+  const [chartData, setChartData] = useState<IFormatData[]>([]);
   const { theme, mode } = useZTheme();
   const { t } = useTranslation();
+  const { currentVMName: vmName } = useZGlobalVar();
+
+  useEffect(() => {
+    if (vmName) {
+      setChartData(generateMockCpuData());
+    } else {
+      setChartData([]);
+    }
+  }, [vmName]);
 
   const lastCpuUsage = chartData[chartData.length - 1]?.value || 0;
 
@@ -29,8 +58,6 @@ export const MainGraphic = () => {
       : lastCpuUsage < 90
         ? theme[mode].warning
         : theme[mode].danger;
-
-  const { currentVMName: vmName } = useZGlobalVar();
 
   // if (!chartData.length) return <EmptyFeedBack />;
 
