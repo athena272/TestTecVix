@@ -276,14 +276,24 @@ export const useBrandMasterResources = () => {
     return { brandMaster: response.data };
   };
 
-  const listAllBrands = async () => {
+  const listAllBrands = async (query?: { search?: string; isPoc?: boolean }) => {
     const auth = await getAuth();
     setIsLoading(true);
+    
+    const params: Record<string, string> = {};
+    if (query?.search) {
+      params.search = query.search;
+    }
+    if (query?.isPoc !== undefined) {
+      params.isPoc = String(query.isPoc);
+    }
+
     const response = await api.get<IListAll<INewMSPResponse>>({
       url: "/brand-master",
       auth,
+      params,
     });
-    setIsLoading(true);
+    setIsLoading(false);
 
     if (response.error) {
       toast.error(response.message);

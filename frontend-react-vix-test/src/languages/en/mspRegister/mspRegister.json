@@ -6,6 +6,8 @@
   "companyName": "MSP Company Name",
   "required": "(Required)",
   "cnpj": "Tax ID",
+  "cnpjLabel": "Tax ID",
+  "cnpjPlaceholder": "00.000.000/0000-00",
   "phone": "Phone",
   "sector": "Business Sector",
   "sectorPlaceholder": "Telecom",
@@ -39,7 +41,7 @@
   "fillField": "The field above must be filled out.",
   "alertMessage": "Please fill out all fields",
   "emailAlertMessage": "Please enter a valid email",
-  "cnpjAlertMessage": "Please enter a valid Tax ID",
+  "cnpjAlertMessage": "Please enter a valid Brazilian CNPJ",
   "mspDomain": "MSP domain",
   "mspDomainPlaceholder": "your-domain.com",
   "domain": "Domain",
@@ -67,5 +69,8 @@
   "vmsFromThisMSP": "VMS from this MSP",
   "mspDeleted": "MSP {{ brandName }} deleted successfully!",
   "doYouWantToDeleteThisVMs": "Do you really want to delete these VMs?",
-  "deletedVMs": "VMs deleted successfully!"
+  "deletedVMs": "VMs deleted successfully!",
+  "next": "Next",
+  "createNew": "Create New MSP",
+  "username": "Username"
 }
