@@ -23,7 +23,8 @@ export class UserService {
   }
 
   async listAll() {
-    return this.userModel.listAll();
+    const users = await this.userModel.listAll();
+    return users.map(({ password, ...u }) => u);
   }
 
   async login(data: unknown) {
