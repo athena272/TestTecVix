@@ -6,6 +6,8 @@
   "companyName": "Nome da empresa MSP",
   "required": "(Obrigatório)",
   "cnpj": "CNPJ",
+  "cnpjLabel": "CNPJ",
+  "cnpjPlaceholder": "00.000.000/0000-00",
   "phone": "Telefone",
   "sector": "Setor de atuação",
   "sectorPlaceholder": "Telecom",
@@ -67,5 +69,9 @@
   "vmsFromThisMSP": "VMS deste MSP",
   "mspDeleted": "MSP {{ brandName }} deletado com sucesso!",
   "doYouWantToDeleteThisVMs": "Deseja realmente deletar estas VMs?",
-  "deletedVMs": "VMs deletadas com sucesso!"
+  "deletedVMs": "VMs deletadas com sucesso!",
+  "next": "Próximo",
+  "createNew": "Criar novo MSP",
+  "district": "Bairro",
+  "username": "Nome de Usuário"
 }

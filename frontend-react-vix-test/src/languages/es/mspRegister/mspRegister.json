@@ -6,6 +6,8 @@
   "companyName": "Nombre de la empresa MSP",
   "required": "(Obligatorio)",
   "cnpj": "NIF",
+  "cnpjLabel": "NIF",
+  "cnpjPlaceholder": "00.000.000/0000-00",
   "phone": "Teléfono",
   "sector": "Sector de actividad",
   "sectorPlaceholder": "Telecomunicaciones",
@@ -39,7 +41,7 @@
   "fillField": "El campo anterior debe completarse.",
   "alertMessage": "Por favor, complete todos los campos",
   "emailAlertMessage": "Por favor, introduzca un correo electrónico válido",
-  "cnpjAlertMessage": "Por favor, introduzca un NIF válido",
+  "cnpjAlertMessage": "Por favor, introduzca un CNPJ brasileño válido",
   "mspDomain": "Dominio de MSP",
   "mspDomainPlaceholder": "tu-dominio.com",
   "domain": "Dominio",
@@ -67,5 +69,8 @@
   "vmsFromThisMSP": "VMS de este MSP",
   "mspDeleted": "MSP {{ brandName }} eliminado con éxito!",
   "doYouWantToDeleteThisVMs": "Desea realmente eliminar estas VMS?",
-  "deletedVMs": "VMS eliminadas con éxito!"
+  "deletedVMs": "VMS eliminadas con éxito!",
+  "next": "Siguiente",
+  "createNew": "Crear nuevo MSP",
+  "username": "Nombre de Usuario"
 }
