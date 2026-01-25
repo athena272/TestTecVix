@@ -38,15 +38,25 @@ export class BrandMasterModel {
   }
 
   async totalCount(query: TQuery, isIncludeDeleted?: boolean) {
-    return prisma.brandMaster.count({
-      where: {
-        ...(!isIncludeDeleted && { deletedAt: null }),
-        isPoc: query.isPoc,
-        brandName: {
-          contains: query.search,
-        },
-      },
-    });
+    const where: {
+      deletedAt?: null;
+      isPoc?: boolean | undefined;
+      brandName?: { contains: string };
+    } = {};
+    
+    if (!isIncludeDeleted) {
+      where.deletedAt = null;
+    }
+    
+    if (query.isPoc !== undefined) {
+      where.isPoc = query.isPoc;
+    }
+    
+    if (query.search) {
+      where.brandName = { contains: query.search };
+    }
+    
+    return prisma.brandMaster.count({ where });
   }
 
   async listAll(query: TQuery, isIncludeDeleted?: boolean) {
@@ -57,14 +67,26 @@ export class BrandMasterModel {
         [field]: direction,
       })) || [];
 
+    const where: {
+      deletedAt?: null;
+      isPoc?: boolean | undefined;
+      brandName?: { contains: string };
+    } = {};
+    
+    if (!isIncludeDeleted) {
+      where.deletedAt = null;
+    }
+    
+    if (query.isPoc !== undefined) {
+      where.isPoc = query.isPoc;
+    }
+    
+    if (query.search) {
+      where.brandName = { contains: query.search };
+    }
+
     const brands = await prisma.brandMaster.findMany({
-      where: {
-        ...(!isIncludeDeleted && { deletedAt: null }),
-        isPoc: query.isPoc,
-        brandName: {
-          contains: query.search,
-        },
-      },
+      where,
       take: limit || undefined,
       skip,
       ...(orderBy.length ? { orderBy } : { orderBy: [{ updatedAt: "desc" }] }),
