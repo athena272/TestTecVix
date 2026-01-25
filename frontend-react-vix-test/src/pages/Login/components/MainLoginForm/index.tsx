@@ -3,6 +3,7 @@ import { useZTheme } from "../../../../stores/useZTheme";
 import { useState } from "react";
 import { Button, CircularProgress, Stack } from "@mui/material";
 import { TextRob20Font1MC } from "../../../../components/Text1MC";
+import { TextRob18Font2M } from "../../../../components/Text2M";
 import { LoginForm } from "./LoginForm";
 import { KeepLogged } from "./KeepLogged";
 import { NewOnVituaX } from "./NewOnVituaX";
@@ -16,6 +17,7 @@ import { ModalUserNotActive } from "./ModalUserNotActive";
 import { LogoBrand } from "../../../../components/LogoBrand";
 import { useZBrandInfo } from "../../../../stores/useZBrandStore";
 import { InstallButton } from "./InstallButton";
+import { Link } from "react-router-dom";
 
 export const MainLoginForm = () => {
   const { mode, theme } = useZTheme();
@@ -115,6 +117,40 @@ export const MainLoginForm = () => {
             </TextRob20Font1MC>
           )}
         </Button>
+        {/* Link para Register sempre visível */}
+        <Stack
+          py={"12px"}
+          sx={{
+            width: "100%",
+            marginTop: "24px",
+            flexDirection: "row",
+            justifyContent: "center",
+          }}
+        >
+          <TextRob18Font2M
+            sx={{
+              display: "flex",
+              gap: "4px",
+              color: theme[mode].dark,
+            }}
+          >
+            {t("loginRegister.dontHaveAccount") || "Não tem uma conta? "}
+            <Link to={"/register"}>
+              <span
+                style={{
+                  fontFamily: "Roboto",
+                  fontWeight: 400,
+                  fontSize: "18px",
+                  lineHeight: "20px",
+                  color: theme[mode].blue,
+                  cursor: "pointer",
+                }}
+              >
+                {t("loginRegister.register")}
+              </span>
+            </Link>
+          </TextRob18Font2M>
+        </Stack>
         {/* New on Brand (unless vituax)? */}
         {Boolean(idBrand) && <NewOnVituaX />}
         {/* Brand - Contact - Terms and policy */}
