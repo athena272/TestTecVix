@@ -24,7 +24,7 @@ export const CTAsButtons = () => {
     password,
     confirmPassword,
   } = useZFormProfileNotifications();
-  const { idUser, profileImgUrl } = useZUserProfile();
+  const { idUser, profileImgUrl, role } = useZUserProfile();
 
   const handleSave = async () => {
     if (!idUser) {
@@ -58,12 +58,14 @@ export const CTAsButtons = () => {
     const payload: Partial<IUserDB> & { password?: string } = {
       username: userName.value.trim(),
       email: userEmail.value.trim(),
-      profileImgUrl: profileImgUrl?.trim() || null,
       fullName: fullNameForm.value?.trim() || null,
       phone: userPhone.value?.trim() || null,
     };
     if (password.value?.trim()) {
       payload.password = password.value.trim();
+    }
+    if (role === "admin" && profileImgUrl) {
+      payload.profileImgUrl = profileImgUrl.trim() || null;
     }
 
     const result = await updateUser(payload);
