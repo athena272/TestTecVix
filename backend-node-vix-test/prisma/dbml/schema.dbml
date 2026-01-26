@@ -26,6 +26,7 @@ Table brandMaster {
   cityCode Int
   district String
   isPoc Boolean [default: false]
+  allowLogoChange Boolean [default: true]
   contract String
   contractAt DateTime
   pocOpenedAt DateTime
