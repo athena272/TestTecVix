@@ -11,7 +11,11 @@ import { TextRob12Font2Xs } from "../../../../../components/Text2Xs";
 import { CircleIcon } from "../../../../../icons/CircleIcon";
 import { useZUserProfile } from "../../../../../stores/useZUserProfile";
 
-export const PerfilPhotoUpload = () => {
+interface IPerfilPhotoUploadProps {
+  disabled?: boolean;
+}
+
+export const PerfilPhotoUpload = ({ disabled = false }: IPerfilPhotoUploadProps) => {
   const { theme, mode } = useZTheme();
   const { t } = useTranslation();
   const { handleUpload, isUploading } = useUploadFile();
@@ -45,6 +49,7 @@ export const PerfilPhotoUpload = () => {
     onDrop,
     accept: { "image/*": [".png", ".jpg", ".jpeg", ".gif", ".svg"] },
     maxSize: 50 * 1024 * 1024, // Limita para 50MB
+    disabled,
   });
 
   return (
@@ -78,7 +83,9 @@ export const PerfilPhotoUpload = () => {
             background: isDragActive
               ? theme[mode].grayLight
               : theme[mode].lightV2,
-            cursor: "pointer",
+            cursor: disabled ? "not-allowed" : "pointer",
+            opacity: disabled ? 0.6 : 1,
+            pointerEvents: disabled ? "none" : "auto",
           }}
         >
           <input {...getInputProps()} />
@@ -129,6 +136,7 @@ export const PerfilPhotoUpload = () => {
           >
             <Button
               disableRipple
+              disabled={disabled}
               sx={{
                 boxSizing: "content-box",
                 padding: "0",
@@ -151,6 +159,7 @@ export const PerfilPhotoUpload = () => {
             </Button>
             <Button
               disableRipple
+              disabled={disabled}
               sx={{
                 boxSizing: "content-box",
                 padding: "0",
