@@ -23,6 +23,7 @@ export interface IBrandMasterResponse {
   manual?: string | null;
   termsOfUse?: string | null;
   privacyPolicy?: string | null;
+  allowLogoChange?: boolean | null;
 }
 
 export interface IBrandMasterBasicInfo {
