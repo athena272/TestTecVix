@@ -1,11 +1,11 @@
-import { SxProps, Typography } from "@mui/material";
+import { SxProps, Typography, TypographyProps } from "@mui/material";
 
-interface IProps {
+interface IProps extends Omit<TypographyProps, "sx"> {
   sx?: SxProps;
   children?: React.ReactNode;
 }
 
-export const TextRob16Font1S = ({ sx = {}, children }: IProps) => {
+export const TextRob16Font1S = ({ sx = {}, children, ...rest }: IProps) => {
   return (
     <Typography
       sx={{
@@ -16,6 +16,7 @@ export const TextRob16Font1S = ({ sx = {}, children }: IProps) => {
         letterSpacing: "2%",
         ...sx,
       }}
+      {...rest}
     >
       {children}
     </Typography>

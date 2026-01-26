@@ -20,6 +20,7 @@ import { ENetworkType } from "../../../types/VMTypes";
 import { AbsoluteBackDrop } from "../../../components/AbsoluteBackDrop";
 import { BTNISOsSection } from "./BTNISOsSection";
 import { useZVM } from "../../../stores/useZVM";
+import { getOSLabel } from "../../../utils/getOSLabel";
 
 export const FormVM = () => {
   const { t } = useTranslation(); // createVm
@@ -107,6 +108,7 @@ export const FormVM = () => {
       hasBackup: hasBackup,
       os: String(vmSO?.value) || "",
       pass: vmPassword,
+      location: vmLocalization?.value as string | undefined,
     });
   };
 
@@ -121,15 +123,17 @@ export const FormVM = () => {
     !vmNetwork;
 
   useEffect(() => {
-    if (sugestionOS)
+    if (sugestionOS) {
+      const osLabel = getOSLabel(sugestionOS, t);
       setVmSO({
-        label: sugestionOS,
+        label: osLabel,
         value: sugestionOS,
       });
+    }
     if (sugestionVCPU) setVmvCpu(sugestionVCPU);
     if (sugestionRAM) setVmMemory(sugestionRAM);
     if (sugestionDisk) setVmDisk(sugestionDisk);
-  }, [sugestionOS, sugestionVCPU, sugestionRAM, sugestionDisk]);
+  }, [sugestionOS, sugestionVCPU, sugestionRAM, sugestionDisk, t, setVmSO, setVmvCpu, setVmMemory, setVmDisk]);
 
   useEffect(() => {
     if (!vmNetwork) {

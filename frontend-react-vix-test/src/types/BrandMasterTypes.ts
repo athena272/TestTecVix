@@ -23,6 +23,10 @@ export interface IBrandMasterResponse {
   manual?: string | null;
   termsOfUse?: string | null;
   privacyPolicy?: string | null;
+  allowLogoChange?: boolean | null;
+  allowEditContactInfo?: boolean | null;
+  allowEditPassword?: boolean | null;
+  allowEditProfileImage?: boolean | null;
 }
 
 export interface IBrandMasterBasicInfo {

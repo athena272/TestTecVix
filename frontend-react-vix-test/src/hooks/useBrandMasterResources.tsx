@@ -33,6 +33,7 @@ interface IUpdateBrandMaster {
   cityCode?: number;
   district?: string;
   isPoc?: boolean;
+  allowLogoChange?: boolean;
 
   manual?: string;
   termsOfUse?: string;
@@ -58,6 +59,7 @@ interface IBrandMasterResource {
   manual?: string;
   termsOfUse?: string;
   privacyPolicy?: string;
+  allowLogoChange?: boolean;
 }
 
 interface ICreateNewBrandMaster {
@@ -112,6 +114,7 @@ export interface INewMSPResponse {
   manual?: string | null;
   termsOfUse?: string | null;
   privacyPolicy?: string | null;
+  allowLogoChange?: boolean | null;
 }
 
 export const useBrandMasterResources = () => {
@@ -131,8 +134,17 @@ export const useBrandMasterResources = () => {
     brandName,
     brandLogo,
     domain,
+    allowLogoChange,
   }: IUpdateBrandMaster) => {
     if (!role || (role !== "admin" && role !== "manager")) return;
+    if (brandLogo !== undefined && role !== "admin") {
+      toast.error(t("generic.errorOlnlyAdmin"));
+      return;
+    }
+    if (allowLogoChange !== undefined && role !== "admin") {
+      toast.error(t("generic.errorOlnlyAdmin"));
+      return;
+    }
     const auth = await getAuth();
     setIsLoading(true);
     const response = await api.put({
@@ -142,6 +154,7 @@ export const useBrandMasterResources = () => {
         brandName,
         brandLogo,
         domain,
+        ...(allowLogoChange !== undefined && { allowLogoChange }),
       },
     });
     setIsLoading(false);
@@ -150,6 +163,60 @@ export const useBrandMasterResources = () => {
       return;
     }
     toast.success(t("whiteLabel.dnsSaved"));
+    return response.data;
+  };
+
+  const updateWhiteLabelConfig = async (allowLogoChange: boolean) => {
+    if (!idBrand) return null;
+    if (!role || role !== "admin") {
+      toast.error(t("generic.errorOlnlyAdmin"));
+      return null;
+    }
+    const auth = await getAuth();
+    setIsLoading(true);
+    const response = await api.put({
+      url: `/brand-master/${idBrand}`,
+      auth,
+      data: { allowLogoChange },
+    });
+    setIsLoading(false);
+    if (response.error) {
+      toast.error(response.message);
+      return null;
+    }
+    toast.success(t("whiteLabel.configSaved"));
+    return response.data;
+  };
+
+  const updateProfileEditPermissions = async (data: {
+    allowEditContactInfo?: boolean;
+    allowEditPassword?: boolean;
+    allowEditProfileImage?: boolean;
+  }) => {
+    if (!idBrand) return null;
+    if (!role || role !== "admin") {
+      toast.error(t("generic.errorOlnlyAdmin"));
+      return null;
+    }
+    const auth = await getAuth();
+    setIsLoading(true);
+    const response = await api.put({
+      url: `/brand-master/${idBrand}`,
+      auth,
+      data,
+    });
+    setIsLoading(false);
+    if (response.error) {
+      toast.error(response.message);
+      return null;
+    }
+    // Atualiza o store com os novos valores
+    setBrandInfo({
+      allowEditContactInfo: response.data?.allowEditContactInfo ?? true,
+      allowEditPassword: response.data?.allowEditPassword ?? true,
+      allowEditProfileImage: response.data?.allowEditProfileImage ?? true,
+    });
+    toast.success(t("profileAndNotifications.configSaved"));
     return response.data;
   };
 
@@ -192,6 +259,10 @@ export const useBrandMasterResources = () => {
       manual: dataResponse?.manual || null,
       termsOfUse: dataResponse?.termsOfUse || null,
       privacyPolicy: dataResponse?.privacyPolicy || null,
+      allowLogoChange: dataResponse?.allowLogoChange ?? true,
+      allowEditContactInfo: dataResponse?.allowEditContactInfo ?? true,
+      allowEditPassword: dataResponse?.allowEditPassword ?? true,
+      allowEditProfileImage: dataResponse?.allowEditProfileImage ?? true,
     });
 
     return response.data;
@@ -276,14 +347,24 @@ export const useBrandMasterResources = () => {
     return { brandMaster: response.data };
   };
 
-  const listAllBrands = async () => {
+  const listAllBrands = async (query?: { search?: string; isPoc?: boolean }) => {
     const auth = await getAuth();
     setIsLoading(true);
+    
+    const params: Record<string, string> = {};
+    if (query?.search) {
+      params.search = query.search;
+    }
+    if (query?.isPoc !== undefined) {
+      params.isPoc = String(query.isPoc);
+    }
+
     const response = await api.get<IListAll<INewMSPResponse>>({
       url: "/brand-master",
       auth,
+      params,
     });
-    setIsLoading(true);
+    setIsLoading(false);
 
     if (response.error) {
       toast.error(response.message);
@@ -371,8 +452,7 @@ export const useBrandMasterResources = () => {
       url: `/brand-master/${idBrand}`,
       auth,
     });
-    setIsLoading(true);
-
+    setIsLoading(false);
     if (response.error) {
       toast.error(response.message);
       return null;
@@ -383,6 +463,8 @@ export const useBrandMasterResources = () => {
   return {
     isLoading,
     updateBrandMaster,
+    updateWhiteLabelConfig,
+    updateProfileEditPermissions,
     updateBrandMasterInfo,
     updateDomain,
     createAnewBrandMaster,

@@ -3,6 +3,7 @@ import { useZTheme } from "../../../../stores/useZTheme";
 import { PersonalInformation } from "./components/PersonalInformation";
 import { NotificationsContact } from "./components/NotificationsContact";
 import { CTAsButtons } from "./components/CTAsButtons";
+import { ProfileEditPermissions } from "./components/ProfileEditPermissions";
 import { useZUserProfile } from "../../../../stores/useZUserProfile";
 
 export const ProfileAndNotifications = () => {
@@ -18,6 +19,18 @@ export const ProfileAndNotifications = () => {
         padding: "24px",
       }}
     >
+      {/* Profile Edit Permissions */}
+      {role === "admin" && (
+        <>
+          <ProfileEditPermissions theme={theme} />
+          <Divider
+            sx={{
+              mt: "16px",
+              background: theme[mode].grayLight,
+            }}
+          />
+        </>
+      )}
       {/* Personal information  */}
       <PersonalInformation />
       <Divider

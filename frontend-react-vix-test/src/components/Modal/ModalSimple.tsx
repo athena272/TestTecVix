@@ -1,7 +1,6 @@
-import { IconButton, Modal, SxProps } from "@mui/material";
+import { IconButton, Modal, SxProps, Stack } from "@mui/material";
 import React from "react";
 import { useZTheme } from "../../stores/useZTheme";
-import { Stack } from "@mui/system";
 import { CloseXIcon } from "../../icons/CloseXIcon";
 
 interface IProps {

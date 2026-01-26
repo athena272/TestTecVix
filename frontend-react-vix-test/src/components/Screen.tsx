@@ -1,5 +1,4 @@
-import { Backdrop, CircularProgress, SxProps } from "@mui/material";
-import { Stack } from "@mui/system";
+import { Backdrop, CircularProgress, SxProps, Stack } from "@mui/material";
 import { useZTheme } from "../stores/useZTheme";
 
 interface IScreenProps {

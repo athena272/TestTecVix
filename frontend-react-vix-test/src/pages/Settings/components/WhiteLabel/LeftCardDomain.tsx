@@ -13,9 +13,13 @@ interface IWhiteLabelChildProps {
     dark: themeColors;
     light: themeColors;
   };
+  canChangeLogo?: boolean;
 }
 
-export const LeftCardDomain = ({ theme }: IWhiteLabelChildProps) => {
+export const LeftCardDomain = ({
+  theme,
+  canChangeLogo = false,
+}: IWhiteLabelChildProps) => {
   const { mode } = useZTheme();
   const { t } = useTranslation();
   const {
@@ -95,21 +99,23 @@ export const LeftCardDomain = ({ theme }: IWhiteLabelChildProps) => {
           color: theme[mode].gray,
         }}
       />
-      <Button
-        sx={{
-          background: theme[mode].blue,
-          width: "100%",
-          color: theme[mode].btnText,
-          fontWeight: 500,
-          fontSize: "16px",
-          textTransform: "none",
-          height: "48px",
-          borderRadius: "12px",
-        }}
-        onClick={() => handleSave()}
-      >
-        {t("whiteLabel.saveChanges")}
-      </Button>
+      {canChangeLogo && (
+        <Button
+          sx={{
+            background: theme[mode].blue,
+            width: "100%",
+            color: theme[mode].btnText,
+            fontWeight: 500,
+            fontSize: "16px",
+            textTransform: "none",
+            height: "48px",
+            borderRadius: "12px",
+          }}
+          onClick={() => handleSave()}
+        >
+          {t("whiteLabel.saveChanges")}
+        </Button>
+      )}
       <TextRob14Font1Xs
         sx={{
           color: mode === "light" ? theme.light.ok : theme.dark.greenLight,

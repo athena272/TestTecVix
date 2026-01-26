@@ -26,6 +26,10 @@ Table brandMaster {
   cityCode Int
   district String
   isPoc Boolean [default: false]
+  allowLogoChange Boolean [default: true]
+  allowEditContactInfo Boolean [default: true]
+  allowEditPassword Boolean [default: true]
+  allowEditProfileImage Boolean [default: true]
   contract String
   contractAt DateTime
   pocOpenedAt DateTime
@@ -43,6 +47,8 @@ Table vM {
   ram Int [not null]
   disk Int [not null]
   hasBackup Boolean [default: false]
+  pass String
+  location ETaskLocation
   idBrandMaster Int
   status EVMStatus
   createdAt DateTime [default: `now()`]
@@ -65,6 +71,11 @@ Table user {
   createdAt DateTime [default: `now()`]
   updatedAt DateTime [default: `now()`]
   deletedAt DateTime
+  fullName String
+  phone String
+  position String
+  department String
+  hiringDate DateTime
   brandMaster brandMaster
 }
 
@@ -78,6 +89,11 @@ Enum ERole {
   admin
   manager
   member
+}
+
+Enum ETaskLocation {
+  bre_barueri
+  usa_miami
 }
 
 Ref: vM.idBrandMaster > brandMaster.idBrandMaster

@@ -11,6 +11,7 @@ export interface IBrandInfo {
   brandPrivacyPolicy?: string;
   brandObjectName?: string;
   domain?: string;
+  allowLogoChange?: boolean;
   setorName?: string;
   fieldName?: string;
   location?: string;
@@ -18,6 +19,9 @@ export interface IBrandInfo {
   emailContact?: string;
   smsContact?: string;
   timezone?: string;
+  allowEditContactInfo?: boolean;
+  allowEditPassword?: boolean;
+  allowEditProfileImage?: boolean;
 
   manual?: null | string;
   termsOfUse?: null | string;
@@ -30,6 +34,7 @@ const INIT_STATE: IBrandInfo = {
   brandLogoTemp: "",
   brandObjectName: "",
   domain: "",
+  allowLogoChange: true,
   brandContact: "https://www.vituax.com/contato/",
   brandSite: "https://vituax.com",
   brandPrivacyPolicy:
@@ -41,6 +46,9 @@ const INIT_STATE: IBrandInfo = {
   emailContact: "",
   smsContact: "",
   timezone: "",
+  allowEditContactInfo: true,
+  allowEditPassword: true,
+  allowEditProfileImage: true,
   manual: null,
   termsOfUse: null,
   privacyPolicy: null,

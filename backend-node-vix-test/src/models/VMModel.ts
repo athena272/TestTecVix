@@ -15,16 +15,24 @@ export class VMModel {
     const { status, idBrandMaster: idBrandMasterParams } = query;
     const isRetriveAllCompanies = idBrandMaster === idBrandMasterParams;
 
+    const resolvedIdBrand =
+      !idBrandMaster && isRetriveAllCompanies ? undefined : (idBrandMaster ?? undefined);
+    const where: {
+      deletedAt: null;
+      idBrandMaster?: number | undefined;
+      status?: (typeof query)["status"];
+      vmName?: { contains: string };
+    } = {
+      deletedAt: null,
+      idBrandMaster: resolvedIdBrand,
+      status,
+    };
+    if (query.search) {
+      where.vmName = { contains: query.search };
+    }
+
     return prisma.vM.count({
-      where: {
-        deletedAt: null,
-        idBrandMaster:
-          !idBrandMaster && isRetriveAllCompanies ? undefined : idBrandMaster,
-        status,
-        vmName: {
-          contains: query.search,
-        },
-      },
+      where,
     });
   }
 
@@ -39,16 +47,24 @@ export class VMModel {
 
     const isRetriveAllCompanies = idBrandMaster === idBrandMasterParams;
 
+    const resolvedIdBrandList =
+      !idBrandMaster && isRetriveAllCompanies ? undefined : (idBrandMaster ?? undefined);
+    const whereList: {
+      deletedAt: null;
+      idBrandMaster?: number | undefined;
+      status?: (typeof query)["status"];
+      vmName?: { contains: string };
+    } = {
+      deletedAt: null,
+      idBrandMaster: resolvedIdBrandList,
+      status,
+    };
+    if (query.search) {
+      whereList.vmName = { contains: query.search };
+    }
+
     const vms = await prisma.vM.findMany({
-      where: {
-        deletedAt: null,
-        idBrandMaster:
-          !idBrandMaster && isRetriveAllCompanies ? undefined : idBrandMaster,
-        status,
-        vmName: {
-          contains: query.search,
-        },
-      },
+      where: whereList,
       skip,
       take: limit || undefined,
       orderBy: orderBy.length

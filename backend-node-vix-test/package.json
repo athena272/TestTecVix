@@ -18,7 +18,8 @@
     "dc:up": "docker compose up -d --build && docker compose logs -f api",
     "dc:down": "docker compose down --remove-orphans",
     "db:up": "docker compose -f docker-compose-db.yml up -d",
-    "db:down": "docker compose -f docker-compose-db.yml down --remove-orphans"
+    "db:down": "docker compose -f docker-compose-db.yml down --remove-orphans",
+    "create-test-users": "ts-node scripts/create-test-users.ts"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"

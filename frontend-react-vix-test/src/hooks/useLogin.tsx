@@ -76,6 +76,7 @@ export const useLogin = () => {
       role: response.data.user.role,
     });
     setLoginTime(new Date());
+    navigate("/");
   };
 
   const goLogout = () => {

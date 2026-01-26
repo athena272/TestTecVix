@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
 import { useZTheme } from "../../../../stores/useZTheme";
+import { useZUserProfile } from "../../../../stores/useZUserProfile";
+import { useZBrandInfo } from "../../../../stores/useZBrandStore";
+import { useBrandMasterResources } from "../../../../hooks/useBrandMasterResources";
 import { availableThemes, ThemeNames } from "../../themes";
 import { Stack } from "@mui/material";
 import { LeftCard } from "./LeftCard";
 
 export const WhiteLabel = () => {
   const { themeName, setTheme, version, themeNameDefault } = useZTheme();
+  const { idBrand } = useZUserProfile();
+  const { setBrandInfo } = useZBrandInfo();
+  const { getSelf } = useBrandMasterResources();
   const themeNames = Object.keys(availableThemes) as ThemeNames[];
   const initialColor = themeNames.includes(themeName as ThemeNames)
     ? themeName
@@ -23,6 +29,15 @@ export const WhiteLabel = () => {
       });
     }
   }, [colorSelected]);
+
+  useEffect(() => {
+    if (!idBrand) return;
+    getSelf().then((data) => {
+      if (data) {
+        setBrandInfo({ allowLogoChange: data.allowLogoChange ?? true });
+      }
+    });
+  }, [idBrand]);
 
   return (
     <Stack
