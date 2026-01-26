@@ -11,6 +11,8 @@ export const ERROR_MESSAGE = {
   USER_ALREADY_EXISTS: "User already exists",
   USER_EMAIL_ALREADY_EXISTS: "Email already exists",
   BRAND_MASTER_NOT_FOUND: "Brand not found",
+  LOGO_CHANGE_NOT_ALLOWED:
+    "Logo change is disabled for this brand or only admins can change it",
   INVALID_CODE: "Invalid code",
   CODE_EXPIRED: "Code expired",
   INVALID_DATA: "Invalid data",
