@@ -50,7 +50,12 @@ export const useZUserProfile = create<IUserProfileState>()(
       ...INIT_STATE,
       setUser: (user: Partial<IUserProfile>) => set((state) => ({ ...state, ...user })),
       setImage: ({ imageUrl, objectName }: { imageUrl: string; objectName: string }) =>
-        set((state) => ({ ...state, imageUrl, objectName })),
+        set((state) => ({
+          ...state,
+          imageUrl,
+          objectName,
+          profileImgUrl: objectName?.trim() ? objectName : null,
+        })),
       setHasHydrated: (value: boolean) => {
         console.log("[useZUserProfile] setHasHydrated called with:", value);
         set({ _hasHydrated: value });
