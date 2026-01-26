@@ -28,6 +28,9 @@ export class BrandMasterModel {
         termsOfUse: true,
         privacyPolicy: true,
         allowLogoChange: true,
+        allowEditContactInfo: true,
+        allowEditPassword: true,
+        allowEditProfileImage: true,
       },
     });
   }

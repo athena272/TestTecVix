@@ -75,6 +75,15 @@ export class BrandMasterService {
       throw new AppError(ERROR_MESSAGE.UNAUTHORIZED, STATUS_CODE.UNAUTHORIZED);
     }
 
+    if (
+      (validData.allowEditContactInfo !== undefined ||
+        validData.allowEditPassword !== undefined ||
+        validData.allowEditProfileImage !== undefined) &&
+      user.role !== "admin"
+    ) {
+      throw new AppError(ERROR_MESSAGE.UNAUTHORIZED, STATUS_CODE.UNAUTHORIZED);
+    }
+
     if (validData.brandLogo !== undefined) {
       if (user.role !== "admin") {
         throw new AppError(
