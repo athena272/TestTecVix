@@ -1,7 +1,10 @@
 import { Divider, Stack } from "@mui/material";
 import { themeColors, useZTheme } from "../../../../stores/useZTheme";
+import { useZBrandInfo } from "../../../../stores/useZBrandStore";
+import { useZUserProfile } from "../../../../stores/useZUserProfile";
 import { LeftCardLogo } from "./LeftCardLogo";
 import { LeftCardDomain } from "./LeftCardDomain";
+import { WhiteLabelConfig } from "./WhiteLabelConfig";
 
 interface IWhiteLabelChildProps {
   theme: {
@@ -11,6 +14,12 @@ interface IWhiteLabelChildProps {
 }
 export const LeftCard = ({ theme }: IWhiteLabelChildProps) => {
   const { mode } = useZTheme();
+  const { allowLogoChange } = useZBrandInfo();
+  const { role, idBrand } = useZUserProfile();
+  const isAdmin = role === "admin";
+  const canChangeLogo =
+    !!idBrand && isAdmin && (allowLogoChange ?? true);
+
   return (
     <Stack
       sx={{
@@ -25,9 +34,14 @@ export const LeftCard = ({ theme }: IWhiteLabelChildProps) => {
         "@media (max-width: 1000px)": { width: "100%" },
       }}
     >
-      <LeftCardLogo theme={theme} />
-      <Divider sx={{ margin: "40px 0", background: theme[mode].grayLight }} />
-      <LeftCardDomain theme={theme} />
+      <WhiteLabelConfig theme={theme} />
+      {canChangeLogo && (
+        <>
+          <LeftCardLogo theme={theme} />
+          <Divider sx={{ margin: "40px 0", background: theme[mode].grayLight }} />
+        </>
+      )}
+      <LeftCardDomain theme={theme} canChangeLogo={canChangeLogo} />
     </Stack>
   );
 };

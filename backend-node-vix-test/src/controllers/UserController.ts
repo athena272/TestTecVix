@@ -62,7 +62,12 @@ export class UserController {
 
   async updateUser(req: CustomRequest<unknown>, res: Response) {
     const { idUser } = req.params;
-    const result = await this.userService.updateUser(idUser as string, req.body);
+    const user = req.user as user;
+    const result = await this.userService.updateUser(
+      idUser as string,
+      req.body,
+      user,
+    );
     return res.status(STATUS_CODE.OK).json(result);
   }
 

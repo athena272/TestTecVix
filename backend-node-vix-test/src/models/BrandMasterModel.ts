@@ -27,6 +27,7 @@ export class BrandMasterModel {
         manual: true,
         termsOfUse: true,
         privacyPolicy: true,
+        allowLogoChange: true,
       },
     });
   }

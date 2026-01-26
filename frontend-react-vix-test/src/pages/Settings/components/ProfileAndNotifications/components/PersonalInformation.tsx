@@ -15,7 +15,7 @@ import { PerfilPhotoUpload } from "./PerfilPhotoUpload";
 export const PersonalInformation = () => {
   const { t } = useTranslation();
   const { theme, mode } = useZTheme();
-  const { username, userEmail } = useZUserProfile();
+  const { username, userEmail, role } = useZUserProfile();
   const {
     userEmail: userEmailForm,
     userName,
@@ -369,13 +369,15 @@ export const PersonalInformation = () => {
           sxSidelabel={sxSideLabel}
         />
       </Stack>
-      <Stack
-        sx={{
-          width: "100%",
-        }}
-      >
-        <PerfilPhotoUpload />
-      </Stack>
+      {role === "admin" && (
+        <Stack
+          sx={{
+            width: "100%",
+          }}
+        >
+          <PerfilPhotoUpload />
+        </Stack>
+      )}
     </Stack>
   );
 };

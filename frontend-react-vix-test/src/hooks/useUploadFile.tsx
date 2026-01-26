@@ -46,18 +46,10 @@ export const useUploadFile = () => {
       objectName.includes("/assets")
     )
       return { url: objectName };
-    setIsLoading(true);
-    const url = objectName[0] === "/" ? objectName.slice(1) : objectName;
-    const response = await api.get<{ url: string }>({
-      url: `/uploads/file/${url}`,
-      auth: {},
-    });
-    setIsLoading(false);
-    if (response.error) {
-      toast.error(response.message);
-      return { url: "" };
-    }
-    return { url: response.data?.url || "" };
+    const baseURL =
+      import.meta.env.VITE_BASE_URL || "http://localhost:3001/api/v1";
+    const url = `${baseURL}/uploads/${objectName}`;
+    return { url };
   };
 
   return { handleUpload, isUploading, getFileByObjectName, isLoading };

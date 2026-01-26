@@ -21,6 +21,7 @@ export const brandMasterSchema = z.object({
   cityCode: z.number().nullable().optional(),
   district: z.string().nullable().optional(),
   isPoc: z.boolean().default(false).optional(),
+  allowLogoChange: z.boolean().optional(),
   contractAt: z.date().nullable().optional(),
   pocOpenedAt: z.date().nullable().optional(),
   manual: z.string().nullable().optional(),

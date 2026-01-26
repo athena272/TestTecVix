@@ -141,9 +141,16 @@ export class UserService {
     return userWithoutPassword;
   }
 
-  async updateUser(idUser: string, data: unknown) {
+  async updateUser(idUser: string, data: unknown, user: user) {
     const validateDataSchema = userUpdatedSchema.parse(data);
     const oldUser = await this.getById(idUser);
+
+    if (
+      validateDataSchema.profileImgUrl !== undefined &&
+      user.role !== "admin"
+    ) {
+      throw new AppError(ERROR_MESSAGE.UNAUTHORIZED, STATUS_CODE.UNAUTHORIZED);
+    }
 
     // Se está atualizando o email, verifica se já existe
     if (validateDataSchema.email && validateDataSchema.email !== oldUser.email) {
