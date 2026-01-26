@@ -188,6 +188,38 @@ export const useBrandMasterResources = () => {
     return response.data;
   };
 
+  const updateProfileEditPermissions = async (data: {
+    allowEditContactInfo?: boolean;
+    allowEditPassword?: boolean;
+    allowEditProfileImage?: boolean;
+  }) => {
+    if (!idBrand) return null;
+    if (!role || role !== "admin") {
+      toast.error(t("generic.errorOlnlyAdmin"));
+      return null;
+    }
+    const auth = await getAuth();
+    setIsLoading(true);
+    const response = await api.put({
+      url: `/brand-master/${idBrand}`,
+      auth,
+      data,
+    });
+    setIsLoading(false);
+    if (response.error) {
+      toast.error(response.message);
+      return null;
+    }
+    // Atualiza o store com os novos valores
+    setBrandInfo({
+      allowEditContactInfo: response.data?.allowEditContactInfo ?? true,
+      allowEditPassword: response.data?.allowEditPassword ?? true,
+      allowEditProfileImage: response.data?.allowEditProfileImage ?? true,
+    });
+    toast.success(t("profileAndNotifications.configSaved"));
+    return response.data;
+  };
+
   const updateBrandMasterInfo = async (data: Partial<IBrandMasterResource>) => {
     if (data.brandName && brandName !== data.brandName && role !== "admin") {
       toast.error(t("generic.errorOlnlyAdmin"));
@@ -228,6 +260,9 @@ export const useBrandMasterResources = () => {
       termsOfUse: dataResponse?.termsOfUse || null,
       privacyPolicy: dataResponse?.privacyPolicy || null,
       allowLogoChange: dataResponse?.allowLogoChange ?? true,
+      allowEditContactInfo: dataResponse?.allowEditContactInfo ?? true,
+      allowEditPassword: dataResponse?.allowEditPassword ?? true,
+      allowEditProfileImage: dataResponse?.allowEditProfileImage ?? true,
     });
 
     return response.data;
@@ -429,6 +464,7 @@ export const useBrandMasterResources = () => {
     isLoading,
     updateBrandMaster,
     updateWhiteLabelConfig,
+    updateProfileEditPermissions,
     updateBrandMasterInfo,
     updateDomain,
     createAnewBrandMaster,
