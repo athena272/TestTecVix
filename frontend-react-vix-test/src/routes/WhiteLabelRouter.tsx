@@ -5,7 +5,7 @@ export const WhiteLabelRouter = {
   path: "/settings",
   element: (
     <PrivatePage>
-      <SettingsPage />,
+      <SettingsPage />
     </PrivatePage>
   ),
 };
