@@ -151,6 +151,27 @@
           ],
           "default": true
         },
+        "allowEditContactInfo": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "default": true
+        },
+        "allowEditPassword": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "default": true
+        },
+        "allowEditProfileImage": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "default": true
+        },
         "contract": {
           "type": [
             "string",

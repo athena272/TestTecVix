@@ -27,6 +27,9 @@ Table brandMaster {
   district String
   isPoc Boolean [default: false]
   allowLogoChange Boolean [default: true]
+  allowEditContactInfo Boolean [default: true]
+  allowEditPassword Boolean [default: true]
+  allowEditProfileImage Boolean [default: true]
   contract String
   contractAt DateTime
   pocOpenedAt DateTime
