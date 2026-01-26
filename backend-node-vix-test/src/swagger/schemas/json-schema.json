@@ -144,6 +144,13 @@
           ],
           "default": false
         },
+        "allowLogoChange": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "default": true
+        },
         "contract": {
           "type": [
             "string",
