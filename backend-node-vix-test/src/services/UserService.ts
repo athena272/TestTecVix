@@ -1,5 +1,6 @@
 import { user } from "@prisma/client";
 import { UserModel } from "../models/UserModel";
+import { BrandMasterModel } from "../models/BrandMasterModel";
 import { TUserCreated, userCreatedSchema } from "../types/validations/User/createUser";
 import { TUserUpdated, userUpdatedSchema } from "../types/validations/User/updateUser";
 import { TUserLogin, userLoginSchema } from "../types/validations/User/loginUser";
@@ -13,6 +14,7 @@ export class UserService {
   constructor() {}
 
   private userModel = new UserModel();
+  private brandMasterModel = new BrandMasterModel();
 
   async getById(idUser: string) {
     const user = await this.userModel.getById(idUser);
@@ -144,6 +146,52 @@ export class UserService {
   async updateUser(idUser: string, data: unknown, user: user) {
     const validateDataSchema = userUpdatedSchema.parse(data);
     const oldUser = await this.getById(idUser);
+
+    // Busca as configurações do brandMaster se o usuário tiver um
+    let brandMasterConfig = null;
+    if (oldUser.idBrandMaster) {
+      brandMasterConfig = await this.brandMasterModel.getById(
+        oldUser.idBrandMaster,
+      );
+    }
+
+    // Valida permissão para editar informações de contato
+    if (
+      brandMasterConfig &&
+      brandMasterConfig.allowEditContactInfo === false &&
+      (validateDataSchema.email !== undefined ||
+        validateDataSchema.phone !== undefined ||
+        validateDataSchema.fullName !== undefined)
+    ) {
+      throw new AppError(
+        ERROR_MESSAGE.UNAUTHORIZED,
+        STATUS_CODE.FORBIDDEN,
+      );
+    }
+
+    // Valida permissão para editar senha
+    if (
+      brandMasterConfig &&
+      brandMasterConfig.allowEditPassword === false &&
+      validateDataSchema.password !== undefined
+    ) {
+      throw new AppError(
+        ERROR_MESSAGE.UNAUTHORIZED,
+        STATUS_CODE.FORBIDDEN,
+      );
+    }
+
+    // Valida permissão para editar imagem de perfil
+    if (
+      brandMasterConfig &&
+      brandMasterConfig.allowEditProfileImage === false &&
+      validateDataSchema.profileImgUrl !== undefined
+    ) {
+      throw new AppError(
+        ERROR_MESSAGE.UNAUTHORIZED,
+        STATUS_CODE.FORBIDDEN,
+      );
+    }
 
     if (
       validateDataSchema.profileImgUrl !== undefined &&

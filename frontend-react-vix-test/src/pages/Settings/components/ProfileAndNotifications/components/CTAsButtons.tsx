@@ -9,6 +9,7 @@ import {
 } from "../../../../../hooks/useUserResources";
 import { useZFormProfileNotifications } from "../../../../../stores/useZFormProfileNotifications";
 import { useZUserProfile } from "../../../../../stores/useZUserProfile";
+import { useZBrandInfo } from "../../../../../stores/useZBrandStore";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -25,10 +26,35 @@ export const CTAsButtons = () => {
     confirmPassword,
   } = useZFormProfileNotifications();
   const { idUser, profileImgUrl, role } = useZUserProfile();
+  const {
+    allowEditContactInfo,
+    allowEditPassword,
+    allowEditProfileImage,
+  } = useZBrandInfo();
+
+  const canEditContactInfo = allowEditContactInfo ?? true;
+  const canEditPassword = allowEditPassword ?? true;
+  const canEditProfileImage = allowEditProfileImage ?? true;
 
   const handleSave = async () => {
     if (!idUser) {
       toast.error(t("generic.errorToSaveData"));
+      return;
+    }
+
+    // Valida permissões antes de salvar
+    if (!canEditContactInfo && (fullNameForm.value?.trim() || userPhone.value?.trim())) {
+      toast.error(t("generic.errorOlnlyAdmin"));
+      return;
+    }
+
+    if (password.value?.trim() && !canEditPassword) {
+      toast.error(t("generic.errorOlnlyAdmin"));
+      return;
+    }
+
+    if (profileImgUrl && role === "admin" && !canEditProfileImage) {
+      toast.error(t("generic.errorOlnlyAdmin"));
       return;
     }
 
@@ -57,14 +83,22 @@ export const CTAsButtons = () => {
 
     const payload: Partial<IUserDB> & { password?: string } = {
       username: userName.value.trim(),
-      email: userEmail.value.trim(),
-      fullName: fullNameForm.value?.trim() || null,
-      phone: userPhone.value?.trim() || null,
     };
-    if (password.value?.trim()) {
+
+    // Só adiciona campos de contato se a permissão estiver habilitada
+    if (canEditContactInfo) {
+      payload.email = userEmail.value.trim();
+      payload.fullName = fullNameForm.value?.trim() || null;
+      payload.phone = userPhone.value?.trim() || null;
+    }
+
+    // Só adiciona senha se a permissão estiver habilitada
+    if (password.value?.trim() && canEditPassword) {
       payload.password = password.value.trim();
     }
-    if (role === "admin" && profileImgUrl) {
+
+    // Só adiciona imagem de perfil se a permissão estiver habilitada
+    if (role === "admin" && profileImgUrl && canEditProfileImage) {
       payload.profileImgUrl = profileImgUrl.trim() || null;
     }
 

@@ -4,6 +4,7 @@
 
 - [Sobre o Teste](#sobre-o-teste)
 - [IMPORTANTE: Como Entregar o Teste](#️-importante-como-entregar-o-teste)
+- [Funcionalidades Implementadas](#funcionalidades-implementadas)
 - [Objetivos](#objetivos)
 - [Arquitetura do Projeto](#arquitetura-do-projeto)
 - [Requisitos do Sistema](#requisitos-do-sistema)
@@ -119,6 +120,73 @@ Antes de enviar, certifique-se de que:
 
 > **🎯 LEMBRE-SE**: O link que você enviará deve ser do formato:
 > `https://github.com/SEU-USUARIO/TestTecVix`
+
+---
+
+## ✅ Funcionalidades Implementadas
+
+Este projeto implementa as seguintes funcionalidades principais:
+
+### 🔐 Autenticação e Autorização
+- Sistema completo de autenticação com JWT
+- Rotas de login e registro de usuários
+- Proteção de rotas com middleware de autenticação
+- Gerenciamento de sessão e tokens
+- CRUD completo de usuários com controle de permissões
+
+### 🗄️ Updates no Banco de Dados
+- Adição de campos `pass`, `location` e `hasBackup` na tabela VM
+- Sistema de migrations com Prisma
+- Validações de dados no backend
+
+### 🏠 Funcionalidades da Home Page
+- Cards de VMs com informações detalhadas
+- Funcionalidade de start/stop de VMs
+- Gráficos de uso de CPU e Memória (mockados)
+- Interface responsiva e intuitiva
+
+### ➕ Criação de VM
+- Formulário completo para criação de VMs
+- Dropdown de sistemas operacionais
+- Cards de sugestão de configurações
+- Validações de dados
+
+### 💾 Gerenciamento de VMs (My VMs)
+- Listagem completa de VMs com filtros avançados
+- Filtros por nome, status, MSP/BrandMaster
+- Filtro "Apenas minhas VMs"
+- Modal de edição com todos os campos editáveis
+- Funcionalidade de start/stop pela tabela e modal
+- Exclusão de VMs (apenas para admins)
+
+### 🏢 Cadastro de MSP
+- Cadastro em 2 etapas com validações
+- Criação e edição de MSPs
+- Campos de endereço com busca por CEP/CNPJ
+- Filtros de pesquisa e flag de POC
+- Interface responsiva seguindo referências visuais
+
+### 👥 Cadastro de Funcionários
+- Tela completa de cadastro de funcionários
+- Validações de dados
+- Interface responsiva
+- Suporte a traduções (i18n)
+
+### 🎨 Configuração White Label
+- Alteração de logo da empresa
+- Restrição de acesso apenas para admins
+- Configurações de tema e cores
+- Gerenciamento de DNS/domínio
+
+### 👤 Configuração de Perfil e Notificações
+- **Permissões de Edição Configuráveis**: Administradores podem controlar quais campos do perfil podem ser editados através de 3 configurações:
+  - Permitir edição de informações de contato (email, telefone, nome completo)
+  - Permitir edição de senha
+  - Permitir edição de imagem de perfil
+- **Interface de Configuração**: Componente dedicado com checkboxes para configuração de permissões (apenas para admins)
+- **Validações de Segurança**: Backend valida permissões antes de permitir edições
+- **UX Melhorada**: Campos são desabilitados visualmente quando permissões estão desativadas
+- **Suporte Multilíngue**: Traduções em português, inglês e espanhol
 
 ---
 
@@ -580,9 +648,34 @@ git commit -m "docs: atualiza README com credenciais de teste"
 
 ### 👤 Configuração de Perfil e Notificações
 
-- [ ] Permitir a edição das **informações de contato**
-- [ ] Permitir a edição da **senha**
-- [ ] Permitir a edição da **imagem de perfil** do usuário logado
+- [x] Permitir a edição das **informações de contato**
+- [x] Permitir a edição da **senha**
+- [x] Permitir a edição da **imagem de perfil** do usuário logado
+- [x] Implementar sistema de **permissões configuráveis** por MSP/BrandMaster
+- [x] Criar interface de configuração para administradores
+- [x] Adicionar validações de segurança no backend e frontend
+- [x] Desabilitar campos visualmente quando permissões estão desativadas
+
+#### Detalhes da Implementação
+
+A funcionalidade de "Configuração de Perfil e Notificações" foi implementada com as seguintes características:
+
+**Backend:**
+- Adicionados 3 campos booleanos na tabela `brandMaster`: `allowEditContactInfo`, `allowEditPassword`, `allowEditProfileImage`
+- Migration criada para aplicar as mudanças no banco de dados
+- Validações implementadas no `UserService` para verificar permissões antes de permitir edições
+- Validação de admin no `BrandMasterService` para alterar configurações de permissão
+
+**Frontend:**
+- Componente `ProfileEditPermissions` criado para configuração de permissões (apenas para admins)
+- Campos de edição desabilitados automaticamente quando permissões estão desativadas
+- Validações no frontend antes de salvar alterações
+- Traduções adicionadas em português, inglês e espanhol
+
+**Segurança:**
+- Apenas usuários com role `admin` podem alterar as configurações de permissão
+- Backend valida permissões do `brandMaster` antes de permitir atualizações no perfil
+- Frontend valida e desabilita campos para melhor experiência do usuário
 
 ---
 

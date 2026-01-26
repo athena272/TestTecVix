@@ -39,9 +39,12 @@ model brandMaster {
   cep           String?
   cityCode      Int?
   district      String?
-  isPoc           Boolean?  @default(false)
-  allowLogoChange Boolean?  @default(true)
-  contract        String?
+  isPoc                Boolean?  @default(false)
+  allowLogoChange      Boolean?  @default(true)
+  allowEditContactInfo Boolean?  @default(true)
+  allowEditPassword    Boolean?  @default(true)
+  allowEditProfileImage Boolean? @default(true)
+  contract             String?
   contractAt    DateTime? @db.DateTime(0)
   pocOpenedAt   DateTime? @db.DateTime(0)
   manual        String?
