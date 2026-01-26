@@ -527,11 +527,3 @@ Para contribuições, siga os padrões estabelecidos:
 
 ---
 
-## 📧 Suporte
-
-Para dúvidas ou suporte, entre em contato com a equipe responsável.
-
----
-
-**Desenvolvido com ❤️ seguindo as melhores práticas de desenvolvimento**
-
