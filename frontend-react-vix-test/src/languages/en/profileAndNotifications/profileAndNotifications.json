@@ -27,5 +27,10 @@
   "changeImage": "Change image",
   "manualLabel": "Manual URL",
   "termsLabel": "URL of the terms of use",
-  "privacyLabel": "Privacy policy URL"
+  "privacyLabel": "Privacy policy URL",
+  "configTitle": "Profile and Notifications Configuration",
+  "allowEditContactInfo": "Allow editing contact information",
+  "allowEditPassword": "Allow editing password",
+  "allowEditProfileImage": "Allow editing logged user profile image",
+  "configSaved": "Configuration saved successfully!"
 }

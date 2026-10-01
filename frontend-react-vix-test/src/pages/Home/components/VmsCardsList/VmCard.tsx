@@ -78,6 +78,7 @@ export const VmCard = ({
     updateNameVm,
     updateDiskSizeVm,
     getVMById: getVMByIdResource,
+    updateVMStatus,
     isLoading,
     getOS,
   } = useVmResource();
@@ -108,9 +109,19 @@ export const VmCard = ({
 
   const handleConfirm = async () => {
     if (statusState !== preStatusState) {
-      setPreStatusState(statusState);
+      const result = await updateVMStatus({
+        idVM: vmId,
+        status: statusState as "RUNNING" | "STOPPED" | "PAUSED",
+      });
 
-      await getVMById();
+      if (result) {
+        setPreStatusState(statusState);
+        await getVMById();
+        setUpdateThisVm(vmId); // Trigger refresh na lista
+      } else {
+        // Reverter em caso de erro
+        setStatusState(preStatusState);
+      }
     }
     setShowConfirmation(false);
   };

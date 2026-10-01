@@ -1,9 +1,8 @@
-import { SxProps } from "@mui/material";
+import { SxProps, Stack } from "@mui/material";
 import { useZTheme } from "../stores/useZTheme";
 import { useWindowSize } from "../hooks/useWindowSize";
 import { useCloseMenuTimed } from "../hooks/useCloseMenuTimed";
 import { Screen } from "./Screen";
-import { Stack } from "@mui/system";
 import { HeaderMobile } from "./HeaderMobile/HeaderMobile";
 import { Header } from "../pages/Home/components/Header";
 import { Sidebar } from "./Sidebar";

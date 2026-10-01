@@ -14,6 +14,8 @@ import { TextRob16Font1S } from "../../../components/Text1S";
 import { ModalConfirmCreate } from "../../VirtualMachine/components/ModalConfirmCreate";
 import { CloseXIcon } from "../../../icons/CloseXIcon";
 import { useZMyVMsList } from "../../../stores/useZMyVMsList";
+import { useZUserProfile } from "../../../stores/useZUserProfile";
+import { useZGlobalVar } from "../../../stores/useZGlobalVar";
 import { PlayCircleIcon } from "../../../icons/PlayCircleIcon";
 // import { PauseCircleIcon } from "../../../icons/PauseCircleIcon";
 import { StopCircleIcon } from "../../../icons/StopCircleIcon";
@@ -35,6 +37,7 @@ export const FormEditVM = ({ onClose }: IProps) => {
     storageOptions,
     localizationOptions,
     updateVM,
+    updateVMStatus,
     validPassword,
     deleteVM,
     isLoadingDeleteVM,
@@ -44,6 +47,8 @@ export const FormEditVM = ({ onClose }: IProps) => {
 
   const { statusHashMap } = useStatusInfo();
   const { currentVM, setCurrentVM } = useZMyVMsList();
+  const { role } = useZUserProfile();
+  const { setUpdateThisVm } = useZGlobalVar();
   const [vmPassword, setVmPassword] = useState(currentVM.pass);
   const [vmName, setVmName] = useState(currentVM.vmName);
   const [vmSO, setVmSO] = useState<TOptions>({
@@ -113,6 +118,7 @@ export const FormEditVM = ({ onClose }: IProps) => {
         hasBackup: hasBackup,
         os: String(vmSO?.value) || "",
         pass: vmPassword,
+        location: vmLocalization?.value as string | undefined,
       },
       currentVM.idVM,
     );
@@ -128,13 +134,41 @@ export const FormEditVM = ({ onClose }: IProps) => {
   };
 
   const handleStopVM = async () => {
-    setStatus("STOPPED");
-    onClose(true);
+    const ok = await updateVMStatus({
+      idVM: currentVM.idVM,
+      status: "STOPPED",
+    });
+    if (ok) {
+      setStatus("STOPPED");
+      setVmIDToStop(0);
+      // Atualizar currentVM com dados frescos
+      const updatedVM = await getVMById(currentVM.idVM);
+      if (updatedVM) {
+        setCurrentVM(updatedVM);
+      }
+      // Atualizar lista em background
+      setUpdateThisVm(currentVM.idVM);
+      // NÃO chamar onClose(true) - manter modal aberta
+    }
   };
 
   const handleStartVM = async () => {
-    setStatus("RUNNING");
-    onClose(true);
+    const ok = await updateVMStatus({
+      idVM: currentVM.idVM,
+      status: "RUNNING",
+    });
+    if (ok) {
+      setStatus("RUNNING");
+      setVmIDToStart(0);
+      // Atualizar currentVM com dados frescos
+      const updatedVM = await getVMById(currentVM.idVM);
+      if (updatedVM) {
+        setCurrentVM(updatedVM);
+      }
+      // Atualizar lista em background
+      setUpdateThisVm(currentVM.idVM);
+      // NÃO chamar onClose(true) - manter modal aberta
+    }
   };
 
   const disabledBtn =
@@ -203,12 +237,11 @@ export const FormEditVM = ({ onClose }: IProps) => {
             }}
           >
             <LabelInputVM
-              onChange={() => {}}
+              onChange={setVmPassword}
               value={vmPassword}
               label={t("createVm.password")}
               placeholder={t("createVm.userPassword")}
               type="password"
-              disabled
             />
             <PasswordValidations vmPassword={vmPassword} />
           </Stack>
@@ -473,30 +506,32 @@ export const FormEditVM = ({ onClose }: IProps) => {
               {t("createVm.edit")}
             </TextRob16Font1S>
           </Btn>
-          <Btn
-            disabled={disabledBtn}
-            onClick={() => setOpenDeleteModal(true)}
-            sx={{
-              padding: "9px 24px",
-              backgroundColor: "transparent",
-              border: "1px solid " + theme[mode].danger,
-              borderRadius: "12px",
-              maxWidth: "150px",
-              marginLeft: "auto",
-              "@media (min-width: 660px)": {},
-            }}
-          >
-            <TextRob16Font1S
+          {role === "admin" && (
+            <Btn
+              disabled={disabledBtn}
+              onClick={() => setOpenDeleteModal(true)}
               sx={{
-                color: theme[mode].danger,
-                fontSize: "16px",
-                fontWeight: "400",
-                lineHeight: "20px",
+                padding: "9px 24px",
+                backgroundColor: "transparent",
+                border: "1px solid " + theme[mode].danger,
+                borderRadius: "12px",
+                maxWidth: "150px",
+                marginLeft: "auto",
+                "@media (min-width: 660px)": {},
               }}
             >
-              {t("createVm.deleteVM")}
-            </TextRob16Font1S>
-          </Btn>
+              <TextRob16Font1S
+                sx={{
+                  color: theme[mode].danger,
+                  fontSize: "16px",
+                  fontWeight: "400",
+                  lineHeight: "20px",
+                }}
+              >
+                {t("createVm.deleteVM")}
+              </TextRob16Font1S>
+            </Btn>
+          )}
         </Stack>
       </Stack>
       {openConfirm && (

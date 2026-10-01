@@ -6,6 +6,11 @@ import { Box, Stack, SxProps, Tooltip } from "@mui/material";
 import { TextRob16FontL } from "../TextL";
 import { TooltipIcon } from "../../icons/TooltipIcon";
 import { UploadIcon } from "../../icons/UploadIcon";
+import { forwardRef, useImperativeHandle } from "react";
+
+export interface InputUploadLabelTooltipRef {
+  openFileDialog: () => void;
+}
 
 interface IProps {
   onUploaded: ({
@@ -21,14 +26,15 @@ interface IProps {
   sxContainer?: SxProps;
   disabled?: boolean;
 }
-export const InputUploadLabelTooltip = ({
+
+export const InputUploadLabelTooltip = forwardRef<InputUploadLabelTooltipRef, IProps>(({
   onUploaded,
   toolTipMessage,
   label,
   sxLabel,
   sxContainer,
   disabled,
-}: IProps) => {
+}, ref) => {
   const { theme, mode } = useZTheme();
   const { t } = useTranslation();
   const { handleUpload, isUploading } = useUploadFile();
@@ -48,11 +54,19 @@ export const InputUploadLabelTooltip = ({
     }
   };
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
     onDrop,
     accept: { "image/*": [".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp"] },
     maxSize: 50 * 1024 * 1024, // Limita para 50MB
   });
+
+  useImperativeHandle(ref, () => ({
+    openFileDialog: () => {
+      if (!disabled) {
+        open();
+      }
+    },
+  }), [open, disabled]);
 
   return (
     <Stack
@@ -109,8 +123,8 @@ export const InputUploadLabelTooltip = ({
           sx={{
             color: theme[mode].gray,
             fontWeight: "400",
-            fontSize: "12px",
-            maxWidth: "136px",
+            fontSize: "16px",
+            maxWidth: "150px",
             textAlign: "center",
             lineHeight: "20px",
             userSelect: "none",
@@ -121,4 +135,4 @@ export const InputUploadLabelTooltip = ({
       </Box>
     </Stack>
   );
-};
+});

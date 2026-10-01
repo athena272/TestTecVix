@@ -1,6 +1,10 @@
 {
   "title": "White Label",
   "subtitle": "Redefina as informações da sua conta",
+  "configTitle": "Configuração White Label",
+  "allowLogoChange": "Permitir que a logo da empresa do usuário seja alterada",
+  "onlyAdminCanChange": "Somente usuários admin podem realizar essa alteração",
+  "configSaved": "Configuração White Label salva com sucesso!",
   "brandLogo": "Logo da marca",
   "clickHere": "Clique aqui para fazer upload do seu logo",
   "loading": "Carregando...",

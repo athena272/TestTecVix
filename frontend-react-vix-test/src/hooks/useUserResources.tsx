@@ -17,6 +17,8 @@ export interface IUserDB {
   createdAt: string | Date;
   updatedAt: string | Date;
   deletedAt: string | Date | null;
+  fullName?: string | null;
+  phone?: string | null;
 }
 
 interface ICreateNewUser {

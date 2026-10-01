@@ -24,6 +24,7 @@ export interface ColaboratorRegisterInputs {
   email: string;
   phone: string;
   position: string;
+  department: string;
   permission: string;
   hiringDate: string;
   status: string;
@@ -40,6 +41,7 @@ const INPUTS_INITIAL_STATE: ColaboratorRegisterInputs = {
   email: "",
   phone: "",
   position: "",
+  department: "",
   permission: "",
   hiringDate: "",
   status: "",
@@ -62,6 +64,7 @@ interface IColaboratorRegister extends ColaboratorRegisterInputs {
   editInfos: editingInfos[];
   colaboratorNameFilter: string;
   companyNameFilter: string;
+  permissionFilter: "all" | "admin" | "manager" | "member";
   currentTabIndex: number;
   search: string;
   page: number;
@@ -77,6 +80,7 @@ const INITIAL_STATE: IColaboratorRegister = {
   editInfos: [],
   colaboratorNameFilter: "",
   companyNameFilter: "",
+  permissionFilter: "all",
   currentTabIndex: 0,
   search: "",
   page: 1,
@@ -100,6 +104,8 @@ interface IColaboratorRegisterState extends IColaboratorRegister {
   setEditInfos: (editingInfos: editingInfos[]) => void;
   setColaboratorNameFilter: (colaboratorNameFilter: string) => void;
   setCompanyNameFilter: (companyNameFilter: string) => void;
+  setPermissionFilter: (v: "all" | "admin" | "manager" | "member") => void;
+  setDepartment: (department: string) => void;
   setErrorMessage: (errorMessage: boolean) => void;
   setIdBrandMaster: (idBrandMaster: number) => void;
   setUsername: (username: string) => void;
@@ -136,6 +142,10 @@ export const useZColaboratorRegister = create<IColaboratorRegisterState>(
       set((state) => ({ ...state, colaboratorNameFilter })),
     setCompanyNameFilter: (companyNameFilter: string) =>
       set((state) => ({ ...state, companyNameFilter })),
+    setPermissionFilter: (permissionFilter: "all" | "admin" | "manager" | "member") =>
+      set((state) => ({ ...state, permissionFilter })),
+    setDepartment: (department: string) =>
+      set((state) => ({ ...state, department })),
     setIdUser: (id: string) => set((state) => ({ ...state, idUser: id })),
     setErrorMessage: (errorMessage: boolean) =>
       set((state) => ({ ...state, errorMessage })),

@@ -42,12 +42,19 @@ export const MyVMsPage = () => {
   const { socketRef } = useZGlobalVar();
 
   const handlerFetchVMList = async (page: number = 0) => {
+    let idBrandMaster: number | undefined;
+    if (selectedMSP) {
+      idBrandMaster = selectedMSP.idBrandMaster;
+    } else if (onlyMyVMs && idBrand) {
+      idBrandMaster = idBrand;
+    }
+
     const { totalCount, vmList } = await fetchMyVmsList({
-      search,
+      search: search ?? undefined,
       page: page || currentPage - 1 || 0,
       orderBy: orderBy ? `${orderBy}:${order}` : undefined,
       limit,
-      idBrandMaster: idBrand,
+      ...(idBrandMaster != null && { idBrandMaster }),
       status,
     });
     setVMList(vmList);

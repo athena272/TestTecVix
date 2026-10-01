@@ -27,3 +27,48 @@ export interface IUserBasicInfo {
   idUser?: string | null;
   idBrandMaster?: number | null;
 }
+
+export interface IUserFromApi {
+  idUser: string;
+  username: string;
+  email: string | null;
+  profileImgUrl: string | null;
+  role: "admin" | "manager" | "member";
+  isActive: boolean;
+  lastLoginDate: string | Date | null;
+  idBrandMaster: number | null;
+  fullName?: string | null;
+  phone?: string | null;
+  position?: string | null;
+  department?: string | null;
+  hiringDate?: string | Date | null;
+  brandMaster?: { brandName: string; brandLogo?: string | null } | null;
+}
+
+export interface ICreateUserPayload {
+  username: string;
+  password: string;
+  email: string;
+  role?: "admin" | "manager" | "member";
+  idBrandMaster?: number | null;
+  isActive?: boolean;
+  fullName?: string | null;
+  phone?: string | null;
+  position?: string | null;
+  department?: string | null;
+  hiringDate?: string | Date | null;
+}
+
+export interface IUpdateUserPayload {
+  username?: string;
+  password?: string;
+  email?: string;
+  role?: "admin" | "manager" | "member";
+  idBrandMaster?: number | null;
+  isActive?: boolean;
+  fullName?: string | null;
+  phone?: string | null;
+  position?: string | null;
+  department?: string | null;
+  hiringDate?: string | Date | null;
+}

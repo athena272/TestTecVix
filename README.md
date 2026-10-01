@@ -1,141 +1,127 @@
-# Teste Técnico Vituax
+# Sistema de Gerenciamento de VMs - Vituax
+
+Sistema completo de gerenciamento de Máquinas Virtuais (VMs) com autenticação, controle de permissões, gerenciamento de MSPs (Multi-Service Providers) e funcionalidades de White Label.
 
 ## 📋 Sumário
 
-- [Sobre o Teste](#sobre-o-teste)
-- [IMPORTANTE: Como Entregar o Teste](#️-importante-como-entregar-o-teste)
-- [Objetivos](#objetivos)
-- [Arquitetura do Projeto](#arquitetura-do-projeto)
+- [Sobre o Projeto](#sobre-o-projeto)
+- [Funcionalidades](#funcionalidades)
+- [Arquitetura](#arquitetura)
 - [Requisitos do Sistema](#requisitos-do-sistema)
 - [Stack Tecnológica](#stack-tecnológica)
-- [Configuração e Instalação](#configuração-e-instalação)
-- [Como Executar o Projeto](#como-executar-o-projeto)
+- [Instalação e Configuração](#instalação-e-configuração)
+- [Como Executar](#como-executar)
 - [Estrutura de Portas](#estrutura-de-portas)
 - [Conceitos Importantes](#conceitos-importantes)
 - [Permissões de Usuários](#permissões-de-usuários)
 - [Credenciais de Teste](#credenciais-de-teste)
-- [Fluxo de Desenvolvimento (GitFlow)](#fluxo-de-desenvolvimento-gitflow)
-- [Tarefas do Desafio](#tarefas-do-desafio)
-  - [Configuração Inicial](#configuração-inicial)
-  - [Autenticação e Autorização](#autenticação-e-autorização)
-  - [Funcionalidades da Home Page](#funcionalidades-da-home-page)
-  - [Criação de VM](#criação-de-vm)
-  - [Gerenciamento de VMs (My VMs)](#gerenciamento-de-vms-my-vms)
-  - [Cadastro de MSP](#cadastro-de-msp)
-  - [Cadastro de Funcionários](#cadastro-de-funcionários)
-  - [Configuração White Label](#configuração-white-label)
-  - [Configuração de Perfil e Notificações](#configuração-de-perfil-e-notificações)
-  - [Tarefas Opcionais/Diferenciais](#tarefas-opcionaisdiferenciais)
-- [Referências Visuais](#referências-visuais)
-- [Lembrete Final](#-lembrete-final)
+- [Comandos Úteis](#comandos-úteis)
+- [Segurança](#segurança)
+- [Internacionalização](#internacionalização)
+- [Recursos Adicionais](#recursos-adicionais)
+- [Contribuindo](#contribuindo)
+- [Suporte](#suporte)
 
 ---
 
-## 🎯 Sobre o Teste
+## 🎯 Sobre o Projeto
 
-O objetivo deste teste técnico é avaliar sua habilidade em:
+Sistema desenvolvido para gerenciamento de Máquinas Virtuais (VMs) com suporte a múltiplas empresas (MSPs), controle de acesso baseado em roles, e funcionalidades de customização White Label.
 
-- **Seguir padrões já estabelecidos** no projeto
-- **Pesquisar, compreender e aplicar** elementos existentes na arquitetura
-- **Trabalhar com o código**, utilizando as bibliotecas e estruturas já implementadas
-
-Você pode criar, instalar e utilizar outras bibliotecas, porém o **foco principal** deve ser trabalhar com o que já existe no projeto.
-
-### 📚 Recomendações Importantes
-
-1. **Entenda a arquitetura**: Gaste um tempo seguindo o fluxo do código, entendendo a localização dos componentes e como eles estão conectados.
-2. **Explore o projeto**: Analise as funções, estilos e padrões já existentes antes de começar a implementar.
-3. **Sinta-se livre para melhorar**: Você pode fazer melhorias e simplificações, desde que não fuja da proposta inicial.
+O projeto foi desenvolvido seguindo boas práticas de desenvolvimento, utilizando arquitetura RESTful no backend e componentes reutilizáveis no frontend.
 
 ---
 
-## ⚠️ IMPORTANTE: Como Entregar o Teste
+## ✅ Funcionalidades
 
-### 🔄 Fork do Repositório
+O sistema implementa as seguintes funcionalidades principais:
 
-**ATENÇÃO**: Você deve fazer um **fork** deste repositório para sua própria conta do GitHub.
+### 🔐 Autenticação e Autorização
+- Sistema completo de autenticação com JWT
+- Rotas de login e registro de usuários
+- Proteção de rotas com middleware de autenticação
+- Gerenciamento de sessão e tokens
+- CRUD completo de usuários com controle de permissões
 
-#### Passos para começar:
+### 🗄️ Gerenciamento de Banco de Dados
+- Sistema de migrations com Prisma
+- Campos adicionais na tabela VM: `pass`, `location`, `hasBackup`
+- Validações de dados no backend
+- Suporte a soft delete
 
-1. **Faça o fork** deste repositório para sua conta pessoal do GitHub
-2. **Clone o seu fork** (não o repositório original):
-   ```bash
-   git clone https://github.com/SEU-USUARIO/TestTecVix.git
-   cd TestTecVix
-   ```
-3. Trabalhe no **seu repositório** seguindo o fluxo de desenvolvimento descrito neste README
-4. Faça commits e pushes para o **seu repositório**
+### 🏠 Funcionalidades da Home Page
+- Cards de VMs com informações detalhadas
+- Funcionalidade de start/stop de VMs
+- Gráficos de uso de CPU e Memória (mockados)
+- Interface responsiva e intuitiva
 
-### ⚠️ ATENÇÃO: Pull Requests
+### ➕ Criação de VM
+- Formulário completo para criação de VMs
+- Dropdown de sistemas operacionais
+- Cards de sugestão de configurações
+- Validações de dados
 
-> **🚨 IMPORTANTE**: Os Pull Requests devem ser feitos **APENAS NO SEU REPOSITÓRIO**, não no repositório da Vituax!
+### 💾 Gerenciamento de VMs (My VMs)
+- Listagem completa de VMs com filtros avançados
+- Filtros por nome, status, MSP/BrandMaster
+- Filtro "Apenas minhas VMs"
+- Modal de edição com todos os campos editáveis
+- Funcionalidade de start/stop pela tabela e modal
+- Exclusão de VMs (apenas para admins)
 
-- ✅ **CORRETO**: Criar PRs de `feature/*` → `release` e `release` → `main` **no seu fork**
-- ❌ **INCORRETO**: Criar PRs para o repositório original da Vituax
+### 🏢 Cadastro de MSP (Multi-Service Provider)
+- Cadastro em 2 etapas com validações
+- Criação e edição de MSPs
+- Campos de endereço com busca por CEP/CNPJ
+- Filtros de pesquisa e flag de POC (Proof of Concept)
+- Interface responsiva
 
-**Pull Requests externos para o repositório da Vituax serão automaticamente fechados pelo GitHub Actions.**
+### 👥 Cadastro de Funcionários
+- Tela completa de cadastro de funcionários
+- Validações de dados
+- Interface responsiva
+- Suporte a traduções (i18n) em português, inglês e espanhol
 
-### 🛑 REQUISITOS OBRIGATÓRIOS PARA A ENTREGA
+### 🎨 Configuração White Label
+- Alteração de logo da empresa
+- Restrição de acesso apenas para admins
+- Configurações de tema e cores personalizadas
+- Gerenciamento de DNS/domínio
 
-Para que seu teste seja considerado, **é OBRIGATÓRIO (não opcional)** que sua entrega contenha:
+### 👤 Configuração de Perfil e Notificações
+- **Permissões de Edição Configuráveis**: Administradores podem controlar quais campos do perfil podem ser editados através de 3 configurações:
+  - Permitir edição de informações de contato (email, telefone, nome completo)
+  - Permitir edição de senha
+  - Permitir edição de imagem de perfil
+- **Interface de Configuração**: Componente dedicado com checkboxes para configuração de permissões (apenas para admins)
+- **Validações de Segurança**: Backend valida permissões antes de permitir edições
+- **UX Melhorada**: Campos são desabilitados visualmente quando permissões estão desativadas
+- **Suporte Multilíngue**: Traduções em português, inglês e espanhol
 
-1.  **Branch `main`**: Contendo o projeto principal original.
-2.  **Branch `release`**: Contendo TODAS as alterações que você fez.
-3.  **PR Aberto**: Um Pull Request **ABERTO** da branch `release` apontando para a branch `main`, dentro do **seu repositório**.
+#### Detalhes da Implementação
 
-> **⚠️ Testes entregues sem esses requisitos NÃO SERÃO CONSIDERADOS.**
+A funcionalidade de "Configuração de Perfil e Notificações" foi implementada com as seguintes características:
 
-### 🔓 Repositório Público
+**Backend:**
+- Adicionados 3 campos booleanos na tabela `brandMaster`: `allowEditContactInfo`, `allowEditPassword`, `allowEditProfileImage`
+- Migration criada para aplicar as mudanças no banco de dados
+- Validações implementadas no `UserService` para verificar permissões antes de permitir edições
+- Validação de admin no `BrandMasterService` para alterar configurações de permissão
 
-> **📢 IMPORTANTE**: Seu repositório fork **DEVE SER PÚBLICO** para que a equipe da Vituax possa avaliar seu trabalho.
+**Frontend:**
+- Componente `ProfileEditPermissions` criado para configuração de permissões (apenas para admins)
+- Campos de edição desabilitados automaticamente quando permissões estão desativadas
+- Validações no frontend antes de salvar alterações
+- Traduções adicionadas em português, inglês e espanhol
 
-Certifique-se de que:
-- [ ] Seu repositório está configurado como **público** (não privado)
-- [ ] A equipe da Vituax consegue acessar o link sem necessidade de permissões especiais
-
-### 📤 Entrega do Teste
-
-Ao finalizar o teste, você deve:
-
-1. ✅ Garantir que todo o código está commitado e enviado para o **seu repositório no GitHub**
-2. ✅ Verificar se o README está atualizado com:
-   - Suas principais modificações
-   - As soluções que você desenvolveu
-   - Credenciais de teste (se aplicável)
-3. ✅ **Enviar o link do seu repositório no GitHub** para a equipe da Vituax
-
-### 📋 Checklist de Entrega
-
-Antes de enviar, certifique-se de que:
-
-- [ ] O código está no **seu repositório pessoal** do GitHub
-- [ ] O repositório está configurado como **público** (não privado)
-- [ ] A branch `main` contém o projeto original
-- [ ] A branch `release` contém todas as suas modificações
-- [ ] Existe um Pull Request da `release` para a `main` **no seu repositório**
-- [ ] O README está atualizado com suas modificações
-- [ ] O projeto está funcionando corretamente
-- [ ] As credenciais de teste estão documentadas
-
-> **🎯 LEMBRE-SE**: O link que você enviará deve ser do formato:
-> `https://github.com/SEU-USUARIO/TestTecVix`
+**Segurança:**
+- Apenas usuários com role `admin` podem alterar as configurações de permissão
+- Backend valida permissões do `brandMaster` antes de permitir atualizações no perfil
+- Frontend valida e desabilita campos para melhor experiência do usuário
 
 ---
 
-## 🎯 Objetivos
-
-Este teste avalia sua capacidade de:
-
-- Compreender e seguir uma arquitetura existente
-- Implementar funcionalidades seguindo padrões estabelecidos
-- Trabalhar com autenticação e autorização (JWT)
-- Desenvolver interfaces responsivas e funcionais
-- Utilizar boas práticas de versionamento (GitFlow)
-- Documentar adequadamente o projeto
-
----
-
-## 🏗️ Arquitetura do Projeto
+## 🏗️ Arquitetura
 
 O projeto está dividido em três partes principais:
 
@@ -146,6 +132,18 @@ TestTecVix/
 ├── screenshots/              # Imagens de referência para as telas
 └── README.md                 # Este arquivo
 ```
+
+### Backend
+- **Arquitetura**: RESTful API com separação de responsabilidades (Controllers, Services, Models)
+- **ORM**: Prisma para gerenciamento de banco de dados
+- **Autenticação**: JWT (JSON Web Tokens)
+- **Validação**: Zod para validação de schemas
+
+### Frontend
+- **Arquitetura**: Componentes React organizados por funcionalidade
+- **Estado Global**: Zustand para gerenciamento de estado
+- **Roteamento**: React Router
+- **Internacionalização**: i18next com suporte a múltiplos idiomas
 
 ---
 
@@ -169,6 +167,7 @@ Antes de começar, certifique-se de ter instalado:
 - **MySQL** - Banco de dados relacional
 - **JWT** - Autenticação via tokens
 - **TypeScript** - Superset JavaScript tipado
+- **Zod** - Validação de schemas
 - **Jest** - Framework de testes
 
 ### Frontend
@@ -184,7 +183,7 @@ Antes de começar, certifique-se de ter instalado:
 
 ---
 
-## ⚙️ Configuração e Instalação
+## ⚙️ Instalação e Configuração
 
 ### 1. Clone o Repositório
 
@@ -294,7 +293,7 @@ VITE_BASE_URL=http://localhost:3001/api/v1
 
 ---
 
-## 🚀 Como Executar o Projeto
+## 🚀 Como Executar
 
 ### Modo Desenvolvimento
 
@@ -393,213 +392,34 @@ O sistema possui três níveis de permissão:
 
 ## 🔑 Credenciais de Teste
 
-> **Importante**: Após implementar o sistema de autenticação, adicione aqui as credenciais de usuários de teste para cada tipo de permissão.
+> **Importante**: Para criar usuários de teste com diferentes roles, execute o script `npm run create-test-users` no diretório do backend.
 
-Exemplo:
+### Como Criar Usuários de Teste
+
+Execute o seguinte comando no diretório do backend:
+
+```bash
+cd backend-node-vix-test
+npm run create-test-users
+```
+
+Isso criará três usuários de teste:
 
 ```
 Admin:
-  Email: admin@vituax.com
-  Senha: Admin@123
+  Email: admin@test.com
+  Senha: Test@123
 
 Manager:
-  Email: manager@vituax.com
-  Senha: Manager@123
+  Email: manager@test.com
+  Senha: Test@123
 
 Member:
-  Email: member@vituax.com
-  Senha: Member@123
+  Email: member@test.com
+  Senha: Test@123
 ```
 
----
-
-## 🌿 Fluxo de Desenvolvimento (GitFlow)
-
-Para demonstrar suas habilidades com versionamento, siga este fluxo sugerido:
-
-### 1. Estrutura de Branches
-
-```
-main (projeto original)
-  └── release (suas modificações)
-       ├── feature/auth-login
-       ├── feature/crud-users
-       ├── feature/vm-management
-       ├── feature/msp-registration
-       └── ...
-```
-
-### 2. Workflow Recomendado
-
-1. **Mantenha a `main`** com o projeto original (sem modificações)
-2. **Crie uma branch `release`** a partir da `main`
-3. **Para cada funcionalidade/tela**, crie uma branch específica:
-   ```bash
-   git checkout release
-   git checkout -b feature/nome-da-funcionalidade
-   ```
-4. **Ao finalizar cada funcionalidade**:
-   - Faça commits descritivos
-   - Abra um Pull Request da `feature/*` para `release`
-   - Faça o merge após a sua revisão
-5. **No final do teste**:
-   - Teremos a branch `main` (projeto original)
-   - E um Pull Request da `release` apontando para `main` (com todas as suas modificações)
-
-### 3. Exemplo de Commits
-
-```bash
-git commit -m "feat: implementa autenticação JWT no backend"
-git commit -m "feat: adiciona tela de login no frontend"
-git commit -m "fix: corrige validação de senha no formulário"
-git commit -m "refactor: melhora estrutura de pastas dos componentes"
-git commit -m "docs: atualiza README com credenciais de teste"
-```
-
----
-
-## ✅ Tarefas do Desafio
-
-### 📋 Configuração Inicial
-
-- [ ] Criar arquivo `.env` baseado no `.env.example` (backend)
-- [ ] Criar arquivo `.env` baseado no `.env.example` (frontend)
-
----
-
-### 🔐 Autenticação e Autorização
-
-- [ ] Implementar as rotas de CRUD para usuários
-- [ ] Implementar rota de login do usuário
-- [ ] Implementar tela de login `/login`
-- [ ] Implementar rota de register do usuário
-- [ ] Implementar tela de register `/register`
-- [ ] Implementar autenticação com token JWT
-- [ ] Proteger as rotas da aplicação (exceto login e register) para que somente usuários logados possam acessar
-- [ ] Adicionar credenciais de usuários de teste no README e/ou `.env.example`
-
----
-
-### 🗄️ Updates no Banco de Dados
-
-- [ ] Adicionar coluna `pass` na tabela `VM` (senha da VM, respeitando regras de segurança)
-- [ ] Adicionar coluna `location` do tipo `ETaskLocation` na tabela `VM`
-- [ ] Adicionar coluna `hasBackup` na tabela `VM`
-
----
-
-### 🏠 Funcionalidades da Home Page
-
-**VM Card List:**
-
-- [ ] Implementar a função de **start** da VM
-- [ ] Implementar a função de **stop** da VM
-- [ ] Implementar os gráficos (mocados) de **Uso de CPU**
-- [ ] Implementar os gráficos (mocados) de **Uso de Memória**
-
----
-
-### ➕ Criação de VM
-
-- [ ] Implementar a lista dropdown dos **sistemas operacionais**
-- [ ] Implementar corretamente a **criação de uma VM**
-- [ ] Possibilitar a aceitação de **configurações dos cards de sugestão**
-
----
-
-### 💾 Gerenciamento de VMs (My VMs)
-
-**Filtros:**
-
-- [ ] Implementar filtro de **pesquisa** (busca por nome)
-- [ ] Implementar filtro por **status da VM**
-- [ ] Implementar filtro por **MSP/BrandMaster**
-- [ ] Implementar filtro **"Apenas minhas VMs"** (VMs exclusivas da mesma BrandMaster do usuário logado)
-
-**Ações:**
-
-- [ ] Possibilitar **stop/start** da VM pela tabela
-- [ ] Possibilitar **stop/start** da VM pelo modal de edição
-
-**Modal de Edição:**
-
-- [ ] Trazer corretamente as **informações da VM** no modal
-- [ ] Possibilitar editar: **senha da VM**
-- [ ] Possibilitar editar: **nome da VM**
-- [ ] Possibilitar editar: **vCPU**
-- [ ] Possibilitar editar: **Memória**
-- [ ] Possibilitar editar: **Disco**
-- [ ] Possibilitar editar: **habilitar/desabilitar backup**
-
-**Exclusão:**
-
-- [ ] Possibilitar **deletar VM** (somente usuários tipo `admin` podem deletar)
-
----
-
-### 🏢 Cadastro de MSP
-
-**Referências visuais**: `screenshots/CadastroDeMSPStep01.png` e `screenshots/CadastroDeMSPStep02.png`
-
-- [ ] Implementar componente para **cadastro de MSP em 2 etapas**
-- [ ] Possibilitar **criar um novo MSP**
-- [ ] Possibilitar **editar um MSP já existente**
-- [ ] Adicionar campos de **endereço** (ou puxar pelo CEP e/ou CNPJ)
-- [ ] Implementar filtros de **search**
-- [ ] Implementar flag de **"Mostrar somente os que estão em POC"**
-
----
-
-### 👥 Cadastro de Funcionários
-
-**Referência visual**: `screenshots/CadastroDeFuncionarios.png`
-
-- [ ] Implementar a tela de **cadastro de funcionários** seguindo a imagem de referência
-- [ ] Atentar para a **responsividade**
-- [ ] Considerar as **traduções** (i18n)
-
----
-
-### 🎨 Configuração White Label
-
-- [ ] Permitir que a **logo da empresa** do usuário seja alterada
-- [ ] Somente usuários **admin** podem realizar essa alteração
-
----
-
-### 👤 Configuração de Perfil e Notificações
-
-- [ ] Permitir a edição das **informações de contato**
-- [ ] Permitir a edição da **senha**
-- [ ] Permitir a edição da **imagem de perfil** do usuário logado
-
----
-
-### 🌟 Tarefas Opcionais/Diferenciais
-
-#### Testes
-
-- [ ] Implementar **testes de snapshot**
-- [ ] Implementar **testes unitários**
-- [ ] Implementar **testes de integração**
-- [ ] Implementar **testes E2E (end-to-end)**
-
-#### Documentação Swagger
-
-- [ ] Fazer a **documentação Swagger da API**
-- [ ] Verificar a rota `/docs` na API para visualizar a documentação
-
----
-
-## 📸 Referências Visuais
-
-As imagens de referência para as telas estão localizadas na pasta `screenshots/`:
-
-- `CadastroDeMSPStep01.png` - Cadastro de MSP (Etapa 1)
-- `CadastroDeMSPStep02.png` - Cadastro de MSP (Etapa 2)
-- `CadastroDeFuncionarios.png` - Cadastro de Funcionários
-
-Utilize essas imagens como guia para implementar as interfaces.
+**Nota**: O script usa `upsert`, então pode ser executado múltiplas vezes sem criar duplicatas. Ele atualizará as senhas caso os usuários já existam.
 
 ---
 
@@ -656,13 +476,32 @@ npm run format             # Formata código com Prettier
 
 ---
 
-## 🤝 Boas Práticas
+## 🔒 Segurança
 
-1. **Commits semânticos**: Use prefixos como `feat:`, `fix:`, `refactor:`, `docs:`, etc.
-2. **Code review**: Revise seu próprio código antes de fazer o commit
-3. **Testes**: Sempre que possível, adicione testes para suas funcionalidades
-4. **Documentação**: Mantenha o README atualizado com suas modificações
-5. **Clean code**: Siga os padrões de código já estabelecidos no projeto
+### Autenticação
+- Tokens JWT com expiração configurável
+- Middleware de autenticação em todas as rotas protegidas
+- Validação de permissões baseada em roles
+
+### Validações
+- Validação de dados no backend com Zod
+- Validação de permissões antes de operações sensíveis
+- Sanitização de inputs
+
+### Permissões Configuráveis
+- Administradores podem controlar permissões de edição de perfil por MSP
+- Validações tanto no frontend quanto no backend
+
+---
+
+## 🌐 Internacionalização
+
+O sistema suporta três idiomas:
+- Português (pt-br)
+- Inglês (en)
+- Espanhol (es)
+
+As traduções são gerenciadas através do i18next e podem ser facilmente expandidas.
 
 ---
 
@@ -676,81 +515,15 @@ npm run format             # Formata código com Prettier
 
 ---
 
-## 📧 Dúvidas
+## 🤝 Contribuindo
 
-Se tiver dúvidas sobre o teste, entre em contato com o time da Vituax.
+Para contribuições, siga os padrões estabelecidos:
 
----
-
-## 🎯 Lembrete Final
-
-### Não se esqueça de:
-
-1. ✅ **Fazer o fork** deste repositório para sua conta do GitHub
-2. ✅ **Trabalhar no seu repositório** (não no repositório original)
-3. ✅ **Atualizar este README** com suas modificações e soluções
-4. ✅ **Enviar o link do SEU repositório** no GitHub para a equipe da Vituax
+1. **Commits semânticos**: Use prefixos como `feat:`, `fix:`, `refactor:`, `docs:`, etc.
+2. **Code review**: Revise seu próprio código antes de fazer o commit
+3. **Testes**: Sempre que possível, adicione testes para suas funcionalidades
+4. **Documentação**: Mantenha o README atualizado
+5. **Clean code**: Siga os padrões de código já estabelecidos no projeto
 
 ---
-
-## ⚠️ IMPORTANTE - Checklist de Entrega
-
-Antes de enviar seu teste, **certifique-se de que**:
-
-### 📌 Estrutura de Branches e Pull Request
-
-- [ ] **Existe a branch `main`** com o projeto original (sem modificações)
-- [ ] **Existe a branch `release`** com todas as suas alterações implementadas
-- [ ] **Existe um Pull Request aberto** da branch `release` para a branch `main`
-
-### 🔨 Validação de Build
-
-Execute os comandos de build para garantir que não há erros:
-
-**Backend:**
-```bash
-cd backend-node-vix-test
-npm run build
-```
-
-**Frontend:**
-```bash
-cd frontend-react-vix-test
-npm run build
-```
-
-### 🐳 Teste em Modo Produção (Docker)
-
-**⚠️ ATENÇÃO:** Seu teste será avaliado no **Modo Produção (Docker)**. Garanta que ele está funcionando corretamente antes de enviar!
-
-Teste localmente com Docker:
-
-**Backend:**
-```bash
-cd backend-node-vix-test
-npm run dc:up
-```
-
-**Frontend:**
-```bash
-cd frontend-react-vix-test
-npm run dc:up
-```
-
-Verifique se:
-- [ ] Os containers sobem sem erros
-- [ ] A aplicação está acessível e funcionando
-- [ ] Todas as funcionalidades implementadas estão operacionais
-- [ ] Não há erros no console do navegador
-- [ ] Não há erros nos logs dos containers
-
-### 🔐 Variáveis de Ambiente
-
-- [ ] **Caso você crie novas chaves no `.env`**, lembre-se de incluí-las também no `.env.example` (tanto do backend quanto do frontend)
-
----
-
-**Boa sorte! 🚀**
-
-**Esperamos receber o link do seu repositório em breve!** 📬
 

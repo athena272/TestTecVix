@@ -12,6 +12,7 @@ export interface IVMResource {
   hasBackup: boolean;
   os: string;
   pass: string;
+  location?: string | null;
   status?: string | null;
   networkType?: ENetworkType;
   vmLocalization?: { label: string | null; value: unknown } | null;
@@ -23,6 +24,7 @@ export interface IVMResource {
     hasBackup: boolean;
     os: string;
     pass: string;
+    location?: string | null;
     status?: string | null;
     vmLocalization?: { label: string | null; value: unknown } | null;
   } | null;

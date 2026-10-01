@@ -11,11 +11,12 @@ import { ScreenFullPage } from "../../components/ScreenFullPage";
 import { useEffect } from "react";
 import { useZVM } from "../../stores/useZVM";
 import { CardMarketPlace } from "./components/CardMarketPlace";
+import { ModalMarketPlaceISO } from "./components/ModalMarketPlaceISO";
 
 export const VirtualMachinePage = () => {
   const { theme, mode } = useZTheme();
   const { t } = useTranslation();
-  const { newRandomPassword, resetAll } = useZVM();
+  const { newRandomPassword, resetAll, isOpenVMMarketPlace, setIsOpenVMMarketPlace } = useZVM();
 
   useEffect(() => {
     return () => {
@@ -140,6 +141,11 @@ export const VirtualMachinePage = () => {
           </Stack>
         </Stack>
       </>
+      {/* Modal de Marketplace de SOs */}
+      <ModalMarketPlaceISO
+        open={isOpenVMMarketPlace}
+        onClose={() => setIsOpenVMMarketPlace(false)}
+      />
     </ScreenFullPage>
   );
 };

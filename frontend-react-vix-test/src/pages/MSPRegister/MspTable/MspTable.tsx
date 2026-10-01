@@ -53,12 +53,18 @@ export const MspTable = () => {
 
   useEffect(() => {
     const fetchMsps = async () => {
-      const response = await listAllBrands();
-      return setMspList(response.result);
+      const response = await listAllBrands({
+        search: mspTableFilter || undefined,
+        isPoc: isPocFilter ? true : undefined,
+      });
+      if (response) {
+        setMspList(response.result);
+      }
     };
 
     fetchMsps();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mspTableFilter, isPocFilter]);
 
   const startEditing = (index: number) => {
     setShowAddressFields(true);
@@ -73,8 +79,7 @@ export const MspTable = () => {
 
   const handleEdit = (index: number) => {
     setEnterOnEditing(true);
-    startEditing(index);
-    setActiveStep(0);
+    setActiveStep(1);
     const msp = mspList.find((c) => c.idBrandMaster === index);
     setCompanyName(msp?.brandName || "");
     setCnpj(msp?.cnpj || "");
@@ -89,12 +94,13 @@ export const MspTable = () => {
     setSector(msp?.setorName || "");
     setMSPDomain(msp?.domain || "");
     setBrandLogo({
-      brandLogoUrl: msp?.brandLogo,
-      brandObjectName: msp?.brandLogo,
+      brandLogoUrl: msp?.brandLogo || "",
+      brandObjectName: msp?.brandLogo || "",
     });
     setCityCode(msp?.cityCode ? `${msp.cityCode}` : "");
     setDistrict(msp?.district || "");
     setIsPoc(Boolean(msp?.isPoc));
+    setIsEditing([index]);
   };
 
   return (
@@ -106,14 +112,7 @@ export const MspTable = () => {
         gap: "16px",
       }}
     >
-      {[...mspList]
-        .filter(
-          (msp) =>
-            msp.brandName
-              .toLowerCase()
-              .includes(mspTableFilter.toLowerCase()) &&
-            (!isPocFilter || msp.isPoc === isPocFilter),
-        )
+      {mspList
         .map((msp, index) => (
           <Fragment key={`${msp.idBrandMaster}-${msp.brandName}`}>
             <Box

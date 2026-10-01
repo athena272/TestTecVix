@@ -10,17 +10,20 @@ export const useAuth = () => {
   const { loginTime, setLoginTime } = useZGlobalVar();
 
   const fetchNewUserToken = async () => {
-    if (!idUser) return "";
-    const response = await api.get<{ token: string | null }>({
-      url: `/user/token/${idUser}`,
-      auth: { Authorization: `Bearer ${token}` },
-      tryRefetch: true,
-    });
-    if (response.error || !response.data.token) {
-      return "";
+    if (!idUser) return null;
+    try {
+      const response = await api.get<{ token: string | null }>({
+        url: `/user/token/${idUser}`,
+        auth: { Authorization: `Bearer ${token}` },
+        tryRefetch: true,
+      });
+      if (response.error || !response.data?.token) {
+        return null; // Retorna null, não ""
+      }
+      return response.data.token;
+    } catch {
+      return null; // Em caso de exceção, retorna null
     }
-
-    return response.data.token;
   };
 
   const getAuth = async (force = false) => {
@@ -36,8 +39,19 @@ export const useAuth = () => {
     setLoginTime(new Date());
 
     const newToken = await fetchNewUserToken();
-    setUser({ token: newToken });
-    return { Authorization: `Bearer ${newToken || token}` };
+
+    // Só atualiza se tiver um novo token válido
+    if (newToken) {
+      setUser({ token: newToken });
+      return { Authorization: `Bearer ${newToken}` };
+    }
+
+    // Se não conseguiu renovar, usa o token atual (não limpa)
+    if (token) {
+      return { Authorization: `Bearer ${token}` };
+    }
+
+    return {};
   };
 
   return {

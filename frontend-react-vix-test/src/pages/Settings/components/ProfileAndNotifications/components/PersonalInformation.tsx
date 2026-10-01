@@ -5,6 +5,7 @@ import { useZTheme } from "../../../../../stores/useZTheme";
 import { InputLabelAndFeedback } from "../../../../../components/Inputs/InputLabelAndFeedback";
 import { EditCirclePencilIcon } from "../../../../../icons/EditCirclePencilIcon";
 import { useZUserProfile } from "../../../../../stores/useZUserProfile";
+import { useZBrandInfo } from "../../../../../stores/useZBrandStore";
 import {
   IFormProfileNotificationsVar,
   useZFormProfileNotifications,
@@ -15,7 +16,12 @@ import { PerfilPhotoUpload } from "./PerfilPhotoUpload";
 export const PersonalInformation = () => {
   const { t } = useTranslation();
   const { theme, mode } = useZTheme();
-  const { username, userEmail } = useZUserProfile();
+  const { username, userEmail, role } = useZUserProfile();
+  const {
+    allowEditContactInfo,
+    allowEditPassword,
+    allowEditProfileImage,
+  } = useZBrandInfo();
   const {
     userEmail: userEmailForm,
     userName,
@@ -25,6 +31,10 @@ export const PersonalInformation = () => {
     fullNameForm,
     setFormProfileNotifications,
   } = useZFormProfileNotifications();
+
+  const canEditContactInfo = allowEditContactInfo ?? true;
+  const canEditPassword = allowEditPassword ?? true;
+  const canEditProfileImage = allowEditProfileImage ?? true;
 
   const inputSx = {
     maxWidth: "400px",
@@ -258,6 +268,7 @@ export const PersonalInformation = () => {
           value={fullNameForm.value}
           onChange={(val) => handleChange("fullNameForm", val)}
           errorMessage={fullNameForm.errorMessage}
+          disabled={!canEditContactInfo}
           icon={
             <EditCirclePencilIcon
               fill={
@@ -278,6 +289,7 @@ export const PersonalInformation = () => {
           value={userName.value}
           onChange={(val) => handleChange("userName", val)}
           errorMessage={userName.errorMessage}
+          disabled={!canEditContactInfo}
           icon={
             <EditCirclePencilIcon
               fill={
@@ -298,6 +310,7 @@ export const PersonalInformation = () => {
           value={userEmailForm.value}
           errorMessage={userEmailForm.errorMessage}
           onChange={(val) => handleChange("userEmail", val)}
+          disabled={!canEditContactInfo}
           icon={
             <EditCirclePencilIcon
               fill={
@@ -320,6 +333,7 @@ export const PersonalInformation = () => {
           errorMessage={userPhone.errorMessage}
           onBlur={validPhoneNumber}
           onChange={(val) => handleChange("userPhone", val)}
+          disabled={!canEditContactInfo}
           icon={
             <EditCirclePencilIcon
               fill={
@@ -351,6 +365,7 @@ export const PersonalInformation = () => {
           value={password.value}
           onChange={(val) => handleChange("password", val)}
           errorMessage={password.errorMessage}
+          disabled={!canEditPassword}
           sx={inputSx}
           sxContainer={sxContainer}
           sxLabel={sxLabel}
@@ -363,19 +378,22 @@ export const PersonalInformation = () => {
           onChange={(val) => handleChange("confirmPassword", val)}
           errorMessage={confirmPassword.errorMessage}
           onBlur={validPassword}
+          disabled={!canEditPassword}
           sx={inputSx}
           sxContainer={sxContainer}
           sxLabel={sxLabel}
           sxSidelabel={sxSideLabel}
         />
       </Stack>
-      <Stack
-        sx={{
-          width: "100%",
-        }}
-      >
-        <PerfilPhotoUpload />
-      </Stack>
+      {role === "admin" && (
+        <Stack
+          sx={{
+            width: "100%",
+          }}
+        >
+          <PerfilPhotoUpload disabled={!canEditProfileImage} />
+        </Stack>
+      )}
     </Stack>
   );
 };

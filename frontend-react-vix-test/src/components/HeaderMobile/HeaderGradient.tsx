@@ -1,5 +1,4 @@
-import { SxProps } from "@mui/material";
-import { Stack } from "@mui/system";
+import { SxProps, Stack } from "@mui/material";
 import { useZTheme } from "../../stores/useZTheme";
 
 interface Props {

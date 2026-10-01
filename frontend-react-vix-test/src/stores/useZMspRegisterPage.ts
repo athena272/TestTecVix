@@ -4,7 +4,7 @@ import { IBrandMasterBasicInfo } from "../types/BrandMasterTypes";
 import { IVMCreatedResponse } from "../types/VMTypes";
 
 interface IMspRegisterPage {
-  activeStep: 0 | 1;
+  activeStep: 0 | 1 | 2;
   companyName: string;
   cnpj: string;
   phone: string;
@@ -43,6 +43,9 @@ interface IMspRegisterPage {
   brandMasterDeleted: IBrandMasterBasicInfo | null;
   vmsToBeDeleted: IVMCreatedResponse[];
   notesBrandMasterDescription: string;
+  minConsumption: string;
+  discountPercentage: string;
+  admUsername: string;
 }
 
 const INIT_STATE: IMspRegisterPage = {
@@ -85,6 +88,9 @@ const INIT_STATE: IMspRegisterPage = {
   brandMasterDeleted: null,
   vmsToBeDeleted: [],
   notesBrandMasterDescription: "",
+  minConsumption: "0",
+  discountPercentage: "0",
+  admUsername: "",
 };
 
 const {
@@ -147,11 +153,14 @@ interface IMspRegisterPageState extends IMspRegisterPage {
   ) => void;
   setVmsToBeDeleted: (vmsToBeDeleted: IVMCreatedResponse[]) => void;
   setNotesBrandMasterDescription: (notesBrandMasterDescription: string) => void;
+  setMinConsumption: (minConsumption: string) => void;
+  setDiscountPercentage: (discountPercentage: string) => void;
+  setAdmUsername: (admUsername: string) => void;
 }
 
 export const useZMspRegisterPage = create<IMspRegisterPageState>((set) => ({
   ...INIT_STATE,
-  setActiveStep: (activeStep: 0 | 1) =>
+  setActiveStep: (activeStep: 0 | 1 | 2) =>
     set((state) => ({ ...state, activeStep })),
   setCompanyName: (companyName: string) =>
     set((state) => ({ ...state, companyName })),
@@ -218,4 +227,10 @@ export const useZMspRegisterPage = create<IMspRegisterPageState>((set) => ({
       notesBrandMasterDescription,
     }));
   },
+  setMinConsumption: (minConsumption: string) =>
+    set((state) => ({ ...state, minConsumption })),
+  setDiscountPercentage: (discountPercentage: string) =>
+    set((state) => ({ ...state, discountPercentage })),
+  setAdmUsername: (admUsername: string) =>
+    set((state) => ({ ...state, admUsername })),
 }));

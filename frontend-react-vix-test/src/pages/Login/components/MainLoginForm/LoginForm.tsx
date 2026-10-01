@@ -25,6 +25,13 @@ export const LoginForm = ({
   const { mode, theme } = useZTheme();
   const { t } = useTranslation();
   return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        onEnterPassword?.();
+      }}
+      style={{ width: "100%" }}
+    >
     <Stack
       className=" py-5 gap-5"
       sx={{
@@ -88,5 +95,6 @@ export const LoginForm = ({
         />
       </FormControl>
     </Stack>
+    </form>
   );
 };

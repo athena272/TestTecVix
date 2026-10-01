@@ -1,4 +1,4 @@
-import { Box, Modal, Stack } from "@mui/material";
+import { Box, Modal, Stack, Button } from "@mui/material";
 import { ScreenFullPage } from "../../components/ScreenFullPage";
 import { TextRob20Font1MB } from "../../components/Text1MB";
 import { useZTheme } from "../../stores/useZTheme";
@@ -16,6 +16,10 @@ import { ModalDeleteVMsFromMSP } from "./ModalDeleteVMsFromMSP";
 import { useBrandMasterResources } from "../../hooks/useBrandMasterResources";
 import { AbsoluteBackDrop } from "../../components/AbsoluteBackDrop";
 import { useVmResource } from "../../hooks/useVmResource";
+import { MspRegisterStep1 } from "./components/MspRegisterStep1";
+import { MspRegisterStep2 } from "./components/MspRegisterStep2";
+import { useZUserProfile } from "../../stores/useZUserProfile";
+import { toast } from "react-toastify";
 
 export const MSPRegisterPage = () => {
   const { theme, mode } = useZTheme();
@@ -32,11 +36,36 @@ export const MSPRegisterPage = () => {
     vmsToBeDeleted,
     setBrandMasterDeleted,
     setVmsToBeDeleted,
+    isEditing,
   } = useZMspRegisterPage();
   const { t } = useTranslation();
-  const { isLoading } = useBrandMasterResources();
+  const { isLoading, createAnewBrandMaster, editBrandMaster: editBrandMasterHook } = useBrandMasterResources();
   const { isLoadingDeleteVM, deleteVM } = useVmResource();
   const [openModalUserNotCreated, setOpenModalUserNotCreated] = useState(false);
+  const { role } = useZUserProfile();
+  const {
+    companyName,
+    cnpj,
+    phone,
+    sector,
+    contactEmail,
+    cep,
+    locality,
+    countryState,
+    city,
+    street,
+    streetNumber,
+    admName,
+    admEmail,
+    admPhone,
+    admPassword,
+    brandLogoUrl,
+    cityCode,
+    district,
+    isPoc,
+    mspDomain,
+    position,
+  } = useZMspRegisterPage();
 
   const resetAllStepStates = () => {
     setIsEditing([]);
@@ -64,6 +93,89 @@ export const MSPRegisterPage = () => {
     };
   }, []);
 
+  const handleStep1Next = () => {
+    setActiveStep(2);
+  };
+
+  const handleStep1Cancel = () => {
+    resetAllStepStates();
+  };
+
+  const handleStep2Back = () => {
+    setActiveStep(1);
+  };
+
+  const handleStep2Clear = () => {
+    resetAll();
+  };
+
+  const handleStep2Submit = async () => {
+    const isEditingMode = isEditing.length > 0;
+    const mspId = isEditingMode ? isEditing[0] : null;
+
+    if (isEditingMode && mspId && editBrandMasterHook) {
+      // Modo edição
+      const data = {
+        brandName: companyName,
+        emailContact: contactEmail,
+        cnpj,
+        setorName: sector,
+        location: locality,
+        state: countryState,
+        city,
+        cep,
+        street,
+        placeNumber: streetNumber,
+        smsContact: phone,
+        brandLogo: brandLogoUrl,
+        cityCode: cityCode ? parseInt(cityCode) : undefined,
+        district,
+        isPoc,
+      };
+
+      const result = await editBrandMasterHook(mspId, data);
+      
+      if (result) {
+        setModalOpen("editedMsp");
+        resetAllStepStates();
+      }
+    } else if (createAnewBrandMaster) {
+      // Modo criação
+      const data = {
+        companyName,
+        cnpj,
+        phone,
+        sector,
+        contactEmail,
+        cep,
+        locality,
+        countryState,
+        city,
+        street,
+        streetNumber,
+        admName,
+        admEmail,
+        admPhone,
+        admPassword: "", // Senha será gerada pelo sistema
+        brandLogo: brandLogoUrl,
+        position: position as "admin",
+        mspDomain,
+        cityCode: cityCode ? parseInt(cityCode) : undefined,
+        district,
+        isPoc,
+      };
+
+      const result = await createAnewBrandMaster(data);
+      
+      if (result) {
+        setModalOpen("createdMsp");
+        resetAllStepStates();
+        // TODO: Criar usuário admin se necessário
+        // Por enquanto, apenas mostra modal de sucesso
+      }
+    }
+  };
+
   return (
     <ScreenFullPage
       title={
@@ -88,20 +200,22 @@ export const MSPRegisterPage = () => {
         paddingBottom: "40px",
       }}
       subtitle={
-        <Box
-          sx={{
-            maxWidth: "646px",
-            "@media (max-width: 660px)": { maxWidth: "136px" },
-          }}
-        >
-          <SampleStepper
-            activeStep={activeStep}
-            stepsNames={[
-              t("mspRegister.stepOneTitle"),
-              t("mspRegister.stepTwoTitle"),
-            ]}
-          />
-        </Box>
+        activeStep > 0 ? (
+          <Box
+            sx={{
+              maxWidth: "646px",
+              "@media (max-width: 660px)": { maxWidth: "136px" },
+            }}
+          >
+            <SampleStepper
+              activeStep={activeStep - 1}
+              stepsNames={[
+                t("mspRegister.stepOneTitle"),
+                t("mspRegister.stepTwoTitle"),
+              ]}
+            />
+          </Box>
+        ) : null
       }
       //  sx= estilização do componente pai
       // children= elementos do componente
@@ -122,7 +236,7 @@ export const MSPRegisterPage = () => {
           boxSizing: "border-box",
         }}
       >
-        {
+        {activeStep === 0 && (
           <Stack
             sx={{
               background: theme[mode].mainBackground,
@@ -156,12 +270,54 @@ export const MSPRegisterPage = () => {
                 >
                   {t("mspRegister.tableTitle")}
                 </TextRob16Font1S>
-                <MspTableFilters />
+                <Stack
+                  sx={{
+                    flexDirection: "row",
+                    gap: "16px",
+                    alignItems: "center",
+                  }}
+                >
+                  <MspTableFilters />
+                  {(role === "admin" || role === "manager") && (
+                    <Button
+                      onClick={() => setActiveStep(1)}
+                      sx={{
+                        background: theme[mode].blue,
+                        color: theme[mode].btnText,
+                        padding: "8px 16px",
+                        borderRadius: "12px",
+                        textTransform: "none",
+                        fontSize: "14px",
+                        fontWeight: "400",
+                        "&:hover": {
+                          background: theme[mode].blueDark,
+                        },
+                      }}
+                    >
+                      {t("mspRegister.createNew")}
+                    </Button>
+                  )}
+                </Stack>
               </Box>
               <MspTable />
             </Stack>
           </Stack>
-        }
+        )}
+        {activeStep === 1 && (
+          <MspRegisterStep1
+            onNext={handleStep1Next}
+            onCancel={handleStep1Cancel}
+            isEditing={isEditing.length > 0}
+          />
+        )}
+        {activeStep === 2 && (
+          <MspRegisterStep2
+            onBack={handleStep2Back}
+            onSubmit={handleStep2Submit}
+            onClear={handleStep2Clear}
+            isEditing={isEditing.length > 0}
+          />
+        )}
       </Stack>
       {modalOpen !== null && (
         <Modal

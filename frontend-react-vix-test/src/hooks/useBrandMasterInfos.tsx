@@ -28,6 +28,10 @@ export const useBrandMasterInfos = () => {
       manual: data?.manual || null,
       termsOfUse: data?.termsOfUse || null,
       privacyPolicy: data?.privacyPolicy || null,
+      allowLogoChange: data?.allowLogoChange ?? true,
+      allowEditContactInfo: data?.allowEditContactInfo ?? true,
+      allowEditPassword: data?.allowEditPassword ?? true,
+      allowEditProfileImage: data?.allowEditProfileImage ?? true,
     });
 
     if (!data.brandTheme) return;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Line,
   XAxis,
@@ -18,16 +18,47 @@ import { useTranslation } from "react-i18next";
 import { useZGlobalVar } from "../../../../stores/useZGlobalVar";
 import { IFormatData } from "../../../../types/socketType";
 
+const generateMockMemoryData = (): IFormatData[] => {
+  const data: IFormatData[] = [];
+  const now = new Date();
+  let baseValue = 40 + Math.random() * 20; // Base entre 40-60%
+
+  for (let i = 29; i >= 0; i--) {
+    const time = new Date(now.getTime() - i * 60000);
+    // Variação mais suave que CPU
+    baseValue += (Math.random() - 0.5) * 5;
+    baseValue = Math.max(0, Math.min(100, baseValue)); // Clamp 0-100
+
+    data.push({
+      time: time.toLocaleTimeString("pt-BR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+      value: parseFloat(baseValue.toFixed(2)),
+    });
+  }
+
+  return data;
+};
+
 export const BottomGraphic = () => {
-  const [chartData] = useState<IFormatData[]>([]);
+  const [chartData, setChartData] = useState<IFormatData[]>([]);
   const { theme, mode } = useZTheme();
   const { t } = useTranslation();
+  const { currentVMName: vmName } = useZGlobalVar();
+
+  useEffect(() => {
+    if (vmName) {
+      setChartData(generateMockMemoryData());
+    } else {
+      setChartData([]);
+    }
+  }, [vmName]);
 
   const lastMemoryData =
     Number(chartData[chartData.length - 1]?.value.toFixed(2)) || 0;
 
   const valueColor = lastMemoryData < 80 ? theme[mode].ok : theme[mode].danger;
-  const { currentVMName: vmName } = useZGlobalVar();
 
   // if (!chartData.length) return <EmptyFeedBack />;
 

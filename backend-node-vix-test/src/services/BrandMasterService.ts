@@ -71,6 +71,34 @@ export class BrandMasterService {
       );
     }
 
+    if (validData.allowLogoChange !== undefined && user.role !== "admin") {
+      throw new AppError(ERROR_MESSAGE.UNAUTHORIZED, STATUS_CODE.UNAUTHORIZED);
+    }
+
+    if (
+      (validData.allowEditContactInfo !== undefined ||
+        validData.allowEditPassword !== undefined ||
+        validData.allowEditProfileImage !== undefined) &&
+      user.role !== "admin"
+    ) {
+      throw new AppError(ERROR_MESSAGE.UNAUTHORIZED, STATUS_CODE.UNAUTHORIZED);
+    }
+
+    if (validData.brandLogo !== undefined) {
+      if (user.role !== "admin") {
+        throw new AppError(
+          ERROR_MESSAGE.LOGO_CHANGE_NOT_ALLOWED,
+          STATUS_CODE.UNAUTHORIZED,
+        );
+      }
+      if (oldBrandMaster.allowLogoChange === false) {
+        throw new AppError(
+          ERROR_MESSAGE.LOGO_CHANGE_NOT_ALLOWED,
+          STATUS_CODE.FORBIDDEN,
+        );
+      }
+    }
+
     if (
       !oldBrandMaster.contract &&
       validData.contract &&

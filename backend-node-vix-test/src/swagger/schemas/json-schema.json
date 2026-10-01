@@ -144,6 +144,34 @@
           ],
           "default": false
         },
+        "allowLogoChange": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "default": true
+        },
+        "allowEditContactInfo": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "default": true
+        },
+        "allowEditPassword": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "default": true
+        },
+        "allowEditProfileImage": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "default": true
+        },
         "contract": {
           "type": [
             "string",
@@ -223,6 +251,22 @@
             "null"
           ],
           "default": false
+        },
+        "pass": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "location": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "bre_barueri",
+            "usa_miami"
+          ]
         },
         "status": {
           "type": [
@@ -333,6 +377,37 @@
           "format": "date-time"
         },
         "deletedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "fullName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "phone": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "position": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "department": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "hiringDate": {
           "type": [
             "string",
             "null"

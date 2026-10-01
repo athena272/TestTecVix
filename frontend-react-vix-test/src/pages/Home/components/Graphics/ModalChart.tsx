@@ -1,6 +1,5 @@
 import { useZTheme } from "../../../../stores/useZTheme";
-import { IconButton, Modal, SxProps } from "@mui/material";
-import { Stack } from "@mui/system";
+import { IconButton, Modal, SxProps, Stack } from "@mui/material";
 import { TextRob12Font2Xs } from "../../../../components/Text2Xs";
 import { ShrinkIcon } from "../../../../icons/ZoomIcons";
 

@@ -36,7 +36,8 @@ export const RowVM = ({ vm, index }: IProps) => {
   const [vmIDToStart, setVmIDToStart] = React.useState<number>(0);
   const { currentVM, setCurrentVM } = useZMyVMsList();
   const { getStatus } = useStatusInfo();
-  const { getOS, getVMById, isLoading: isLoadingVm } = useVmResource();
+  const { getOS, getVMById, updateVMStatus, isLoading: isLoadingVm } =
+    useVmResource();
 
   const idVM: number = Number(row.idVM);
   const labelId = `enhanced-table-checkbox-${index}`;
@@ -48,13 +49,30 @@ export const RowVM = ({ vm, index }: IProps) => {
     setCurrentVM(newVMCurrent);
   };
 
-  const handleConfirVMStatusChange = async () => {
-    const updatedVM = await getVMById(vmIDToStop || vmIDToStart);
-    if (updatedVM) {
-      setRow(updatedVM);
+  const handleConfirmStart = async () => {
+    if (!vmIDToStart) return;
+    const ok = await updateVMStatus({
+      idVM: vmIDToStart,
+      status: "RUNNING",
+    });
+    if (ok) {
+      const updatedVM = await getVMById(vmIDToStart);
+      if (updatedVM) setRow(updatedVM);
+    }
+    setVmIDToStart(0);
+  };
+
+  const handleConfirmStop = async () => {
+    if (!vmIDToStop) return;
+    const ok = await updateVMStatus({
+      idVM: vmIDToStop,
+      status: "STOPPED",
+    });
+    if (ok) {
+      const updatedVM = await getVMById(vmIDToStop);
+      if (updatedVM) setRow(updatedVM);
     }
     setVmIDToStop(0);
-    setVmIDToStart(0);
   };
 
   useEffect(() => {
@@ -422,7 +440,7 @@ export const RowVM = ({ vm, index }: IProps) => {
         <ModalStartVM
           vmName={row.vmName}
           idVM={vmIDToStart}
-          onConfirm={handleConfirVMStatusChange}
+          onConfirm={handleConfirmStart}
           onCancel={() => setVmIDToStart(0)}
         />
       )}
@@ -430,7 +448,7 @@ export const RowVM = ({ vm, index }: IProps) => {
         <ModalStopVM
           vmName={row.vmName}
           idVM={vmIDToStop}
-          onConfirm={handleConfirVMStatusChange}
+          onConfirm={handleConfirmStop}
           onCancel={() => setVmIDToStop(0)}
         />
       )}
